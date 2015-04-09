@@ -1,7 +1,14 @@
-﻿BaseRoom = function () {
-
+﻿BaseRoom = function (graphs) {
+   
     LBState.call(this);
+
     this.currentY = 0;
+
+    //TODO: Aggiungere controllo che se sono nulle devono andare di default quelle predefinite!
+    this.buldingsGraphs = graphs.buildingsGraphs;
+    this.sidewalkGraph = graphs.sidewalkGraph;
+    this.roadGraph = graphs.roadGraph;
+    this.backgroundGraph = graphs.backgroundGraph;
 }
 
 BaseRoom.prototype = Object.create(LBState.prototype);
@@ -29,18 +36,11 @@ BaseRoom.prototype.create = function () {
 
     this.draw();
 
-    //Sistemare le coordinate di spawn (da ricevere dal server)
-    gameInstance.clientsList[myId] = new LBPlayer(gameInstance, gameInstance.playerSpawnPoint.x, gameInstance.playerSpawnPoint.y, 'player');
-    gameInstance.phaserGame.camera.follow(gameInstance.clientsList[myId]);
-
-    gameInstance.cDepth.depthSort(gameInstance);
+    //TODO: fare in modo di formattare la mappa del movimento "ad hoc"
+    
 
     LBState.prototype.create.call(this);
     
-}
-
-BaseRoom.prototype.createMapMovementMatrix = function () {
-
 }
 
 BaseRoom.prototype.drawRoad = function (graph, proportion, initY) {
@@ -72,7 +72,6 @@ BaseRoom.prototype.drawSidewalk = function (graph, proportion, initY) {
 
 }
 
-
 BaseRoom.prototype.drawTown = function (graph, initY) {
 
     for (x = 0; x < Math.ceil(gameInstance.phaserGame.world._width) ; x) {
@@ -86,16 +85,16 @@ BaseRoom.prototype.drawTown = function (graph, initY) {
 
 }
 
-BaseRoom.prototype.drawBg = function () {
-    bg = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.phaserGame.world._width, gameInstance.phaserGame.world._height, 'bg');
+BaseRoom.prototype.drawBg = function (graph) {
+    bg = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.phaserGame.world._width, gameInstance.phaserGame.world._height, graph);
     gameInstance.bgGroup.add(bg);
 }
 
 BaseRoom.prototype.draw = function () {
     console.log('draw');
-    this.drawBg();
-    this.drawRoad('road', 1 / 2, gameInstance.phaserGame.world._height);
-    this.drawSidewalk('sidewalk', 1 / 10, this.currentY);
-    this.drawTown(['building', 'building1'], this.currentY);
+    this.drawBg(this.backgroundGraph);
+    this.drawRoad(this.roadGraph, 1 / 2, gameInstance.phaserGame.world._height);
+    this.drawSidewalk(this.sidewalkGraph, 1 / 10, this.currentY);
+    this.drawTown(this.buldingsGraphs, this.currentY);
     
 }

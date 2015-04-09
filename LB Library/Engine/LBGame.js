@@ -64,8 +64,7 @@ LBGame.prototype.constructor = LBGame;
 
 //Crea la mappa dei punti di snap per i baricentri degli oggetti nel modo tile-based
 
-//ISSUE: MapMovementH0 non funziona, anche cambiandolo il risultato è sempre lo stesso!
-//ISSUE: Problema con il corretto posizionamento degli oggetti e dei personaggi. Non deve dipendere dalla zona del movimento!
+
 LBGame.prototype.createMovementMap = function (h, h0) {
     var map = {},
         zeroY = this.phaserGame.height - h0 - (h * this.movementGridSize);
