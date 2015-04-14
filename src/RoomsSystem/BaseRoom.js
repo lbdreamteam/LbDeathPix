@@ -8,6 +8,7 @@
     this.buldingsGraphs = graphs.buildingsGraphs;
     this.sidewalkGraph = graphs.sidewalkGraph;
     this.roadGraph = graphs.roadGraph;
+    this.roadLineGraph = graphs.roadLineGraph;
     this.backgroundGraph = graphs.backgroundGraph;
 }
 
@@ -16,11 +17,7 @@ BaseRoom.prototype.constructor = BaseRoom;
 
 BaseRoom.prototype.preload = function () {
     LBState.prototype.preload.call(this);
-    gameInstance.phaserGame.load.image('road', 'assets/placeholders/road.png');
-    gameInstance.phaserGame.load.image('sidewalk', 'assets/placeholders/sidewalk.png');
-    gameInstance.phaserGame.load.image('building', 'assets/placeholders/building.png');
-    gameInstance.phaserGame.load.image('building1', 'assets/placeholders/building1.png');
-    gameInstance.phaserGame.load.image('bg', 'assets/placeholders/bg.png');
+    
 }
 
 
@@ -43,27 +40,33 @@ BaseRoom.prototype.create = function () {
     
 }
 
-BaseRoom.prototype.drawRoad = function (graph, proportion, initY) {
+BaseRoom.prototype.drawRoad = function (proportion, initY) {
 
     initY -= gameInstance.movementGridSize;
 
-    for (x = 0; x < Math.round(gameInstance.phaserGame.world._width / gameInstance.movementGridSize) ; x++) {
-        for (y = 0; y < Math.round((proportion * gameInstance.phaserGame.world._height) / gameInstance.movementGridSize); y++) {
-            temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, graph);
-            gameInstance.bgGroup.add(temp);
+    for (x = 0; x < Math.round(gameInstance.world.width / gameInstance.movementGridSize) ; x++) {
+        for (y = 0; y < Math.round((proportion * gameInstance.world.height) / gameInstance.movementGridSize) ; y++) {
+            if (y != Math.floor(Math.round((proportion * gameInstance.world.height) / gameInstance.movementGridSize) / 2)) {
+                temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.roadGraph);
+                gameInstance.bgGroup.add(temp);
+            }
+            else {
+                temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.roadLineGraph);
+                gameInstance.bgGroup.add(temp);
+            }
 
             this.currentY = initY - y * gameInstance.movementGridSize;
         }
     }
 }
 
-BaseRoom.prototype.drawSidewalk = function (graph, proportion, initY) {
+BaseRoom.prototype.drawSidewalk = function (proportion, initY) {
 
     initY -= gameInstance.movementGridSize;
 
-    for (x = 0; x < Math.round(gameInstance.phaserGame.world._width / gameInstance.movementGridSize) ; x++) {
-        for (y = 0; y < Math.round((proportion * gameInstance.phaserGame.world._height) / gameInstance.movementGridSize) ; y++) {
-            temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, graph);
+    for (x = 0; x < Math.round(gameInstance.world.width / gameInstance.movementGridSize) ; x++) {
+        for (y = 0; y < Math.round((proportion * gameInstance.world.height) / gameInstance.movementGridSize) ; y++) {
+            temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.sidewalkGraph);
             gameInstance.bgGroup.add(temp);
 
             this.currentY = initY - y * gameInstance.movementGridSize;
@@ -72,12 +75,12 @@ BaseRoom.prototype.drawSidewalk = function (graph, proportion, initY) {
 
 }
 
-BaseRoom.prototype.drawTown = function (graph, initY) {
+BaseRoom.prototype.drawTown = function (initY) {
 
     for (x = 0; x < Math.ceil(gameInstance.phaserGame.world._width) ; x) {
-        var n = Math.floor((Math.random() * graph.length));
-        var image = gameInstance.phaserGame.cache.getImage(graph[n]);
-        temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, graph[n]);
+        var n = Math.floor((Math.random() * this.buldingsGraphs.length));
+        var image = gameInstance.phaserGame.cache.getImage(this.buldingsGraphs[n]);
+        temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, this.buldingsGraphs[n]);
         gameInstance.bgGroup.add(temp);
         this.currentY = temp.y - temp.height;
         x += temp.width;
@@ -85,16 +88,16 @@ BaseRoom.prototype.drawTown = function (graph, initY) {
 
 }
 
-BaseRoom.prototype.drawBg = function (graph) {
-    bg = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.phaserGame.world._width, gameInstance.phaserGame.world._height, graph);
+BaseRoom.prototype.drawBg = function () {
+    bg = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, gameInstance.world.height, this.backgroundGraph);
     gameInstance.bgGroup.add(bg);
 }
 
 BaseRoom.prototype.draw = function () {
     console.log('draw');
-    this.drawBg(this.backgroundGraph);
-    this.drawRoad(this.roadGraph, 1 / 2, gameInstance.phaserGame.world._height);
-    this.drawSidewalk(this.sidewalkGraph, 1 / 10, this.currentY);
-    this.drawTown(this.buldingsGraphs, this.currentY);
+    this.drawBg();
+    this.drawRoad(1/2, gameInstance.world.height);
+    this.drawSidewalk(1 / 10, this.currentY);
+    this.drawTown(this.currentY);
     
 }

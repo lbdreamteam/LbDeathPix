@@ -68,7 +68,7 @@ LBGame.prototype.constructor = LBGame;
 LBGame.prototype.createMovementMap = function (h, h0) {
     var map = {},
         zeroY = this.phaserGame.height - h0 - (h * this.movementGridSize);
-    for (var column = 1; column <= Math.floor(this.phaserGame.width / this.movementGridSize) ; column++) {
+    for (var column = 1; column <= Math.floor(this.world.width / this.movementGridSize) ; column++) {
         map[column] = {};
         for (var row = 1; row <= h; row++) map[column][row] = { x: (column * this.movementGridSize) - (this.movementGridSize / 2), y: zeroY + (row * this.movementGridSize) - (this.movementGridSize / 2) };
     }
