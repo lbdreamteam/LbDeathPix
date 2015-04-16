@@ -9,6 +9,7 @@
     this.sidewalkGraph = graphs.sidewalkGraph;
     this.roadGraph = graphs.roadGraph;
     this.roadLineGraph = graphs.roadLineGraph;
+    this.foregroundGraph = graphs.foregroundGraph;
     this.backgroundGraph = graphs.backgroundGraph;
 }
 
@@ -38,6 +39,20 @@ BaseRoom.prototype.create = function () {
 
     LBState.prototype.create.call(this);
     
+}
+
+BaseRoom.prototype.drawForeground = function (proportion, initY) {
+
+    initY -= gameInstance.movementGridSize;
+
+    for (x = 0; x < Math.round(gameInstance.world.width / gameInstance.movementGridSize) ; x++) {
+        for (y = 0; y < Math.round((proportion * gameInstance.world.height) / gameInstance.movementGridSize) ; y++) {
+            temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.foregroundGraph);
+            gameInstance.bgGroup.add(temp);
+
+            this.currentY = initY - y * gameInstance.movementGridSize;
+        }
+    }
 }
 
 BaseRoom.prototype.drawRoad = function (proportion, initY) {
@@ -96,7 +111,8 @@ BaseRoom.prototype.drawBg = function () {
 BaseRoom.prototype.draw = function () {
     console.log('draw');
     this.drawBg();
-    this.drawRoad(1/2, gameInstance.world.height);
+    this.drawForeground(1/10, gameInstance.world.height)
+    this.drawRoad(1/2, this.currentY);
     this.drawSidewalk(1 / 10, this.currentY);
     this.drawTown(this.currentY);
     

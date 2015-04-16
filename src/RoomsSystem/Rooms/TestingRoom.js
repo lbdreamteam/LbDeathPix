@@ -3,9 +3,10 @@
     this.sidewalkGraph = 'sidewalk';
     this.roadGraph = 'road';
     this.roadLineGraph = 'roadLine';
+    this.foregroundGraph = 'sidewalk';
     this.backgroundGraph = 'bg';
 
-    BaseRoom.call(this, { buildingsGraphs: this.buildingsGraphs, roadGraph: this.roadGraph, roadLineGraph: this.roadLineGraph, sidewalkGraph: this.sidewalkGraph, backgroundGraph: this.backgroundGraph });
+    BaseRoom.call(this, { buildingsGraphs: this.buildingsGraphs, foregroundGraph: this.foregroundGraph, roadGraph: this.roadGraph, roadLineGraph: this.roadLineGraph, sidewalkGraph: this.sidewalkGraph, backgroundGraph: this.backgroundGraph });
 }
 
 TestingRoom.prototype = Object.create(BaseRoom.prototype);
