@@ -1,0 +1,34 @@
+{
+  "graphs" : {
+    "buildingsGraphs" : [
+      null
+    ],
+    
+    "roadGraphs" : {
+      "road" : [
+        null
+      ],
+      
+      "centralLine" : null
+    },
+    
+    "sidewalkGraph" : null,
+    
+    "backgroundGraph" : null,
+    
+    "foregroundGraph" : null
+  },
+  
+  "proportions" : {
+    "road" : null,
+    "sidewalk" : null,
+    "foreground" : null
+  },
+  
+  "buildingsArray" : [
+    null  
+  ],
+  
+  "world" : { "width": null, "height" : null}
+  
+}

@@ -3,6 +3,7 @@
     LBState.call(this);
 
     this.currentY = 0;
+    this.buildingsArray = [];
 
     //TODO: Aggiungere controllo che se sono nulle devono andare di default quelle predefinite!
     this.buldingsGraphs = graphs.buildingsGraphs;
@@ -90,16 +91,21 @@ BaseRoom.prototype.drawSidewalk = function (proportion, initY) {
 
 }
 
-BaseRoom.prototype.drawTown = function (initY) {
+BaseRoom.prototype.drawBuildings = function (initY) {
 
+    var cont = 0;
     for (x = 0; x < Math.ceil(gameInstance.phaserGame.world._width) ; x) {
         var n = Math.floor((Math.random() * this.buldingsGraphs.length));
         var image = gameInstance.phaserGame.cache.getImage(this.buldingsGraphs[n]);
+        this.buildingsArray[cont] = this.buldingsGraphs[n];
+        cont++;
         temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, this.buldingsGraphs[n]);
         gameInstance.bgGroup.add(temp);
         this.currentY = temp.y - temp.height;
         x += temp.width;
     }
+
+    console.log(this.buildingsArray);
 
 }
 
@@ -114,6 +120,6 @@ BaseRoom.prototype.draw = function () {
     this.drawForeground(1/10, gameInstance.world.height)
     this.drawRoad(1/2, this.currentY);
     this.drawSidewalk(1 / 10, this.currentY);
-    this.drawTown(this.currentY);
+    this.drawBuildings(this.currentY);
     
 }
