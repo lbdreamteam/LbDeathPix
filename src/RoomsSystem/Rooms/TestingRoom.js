@@ -1,12 +1,11 @@
 ﻿TestingRoom = function () {
     this.buildingsGraphs = ['building', 'building1'];
     this.sidewalkGraph = 'sidewalk';
-    this.roadGraph = 'road';
-    this.roadLineGraph = 'roadLine';
+    this.roadGraphs = { road: 'road', roadLine: 'roadLine' };
     this.foregroundGraph = 'sidewalk';
     this.backgroundGraph = 'bg';
 
-    BaseRoom.call(this, { buildingsGraphs: this.buildingsGraphs, foregroundGraph: this.foregroundGraph, roadGraph: this.roadGraph, roadLineGraph: this.roadLineGraph, sidewalkGraph: this.sidewalkGraph, backgroundGraph: this.backgroundGraph });
+    BaseRoom.call(this, { graphs: { buildingsGraphs: this.buildingsGraphs, foregroundGraph: this.foregroundGraph, roadGraphs: this.roadGraphs, sidewalkGraph: this.sidewalkGraph, backgroundGraph: this.backgroundGraph }, proportions: { road: 1 / 2, sidewalk: 1 / 10, foreground: 1 / 10 }, buildingsArray: ['building', 'building1', 'building', 'building1', 'building', 'building1', 'building', 'building1', 'building1', 'building', 'building', 'building', 'building', 'building1', 'building', 'building1', 'building', 'building', 'building1', 'building', 'building', 'building1', 'building', 'building1', 'building1'] });
 }
 
 TestingRoom.prototype = Object.create(BaseRoom.prototype);

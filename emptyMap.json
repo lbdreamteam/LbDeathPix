@@ -5,11 +5,9 @@
     ],
     
     "roadGraphs" : {
-      "road" : [
-        null
-      ],
+      "road" : null,
       
-      "centralLine" : null
+      "roadLine" : null
     },
     
     "sidewalkGraph" : null,
