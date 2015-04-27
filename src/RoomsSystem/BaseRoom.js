@@ -88,7 +88,6 @@ BaseRoom.prototype.drawForeground = function (initY) {
         for (y = 0; y < Math.round((this.proportions.foreground * gameInstance.world.height) / gameInstance.movementGridSize) ; y++) {
             temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.graphs.foregroundGraph);
             gameInstance.bgGroup.add(temp);
-
             this.currentY = initY - y * gameInstance.movementGridSize;
         }
     }
@@ -122,7 +121,6 @@ BaseRoom.prototype.drawSidewalk = function (initY) {
         for (y = 0; y < Math.round((this.proportions.sidewalk * gameInstance.world.height) / gameInstance.movementGridSize) ; y++) {
             temp = gameInstance.phaserGame.add.sprite(x * gameInstance.movementGridSize, initY - y * gameInstance.movementGridSize, this.graphs.sidewalkGraph);
             gameInstance.bgGroup.add(temp);
-
             this.currentY = initY - y * gameInstance.movementGridSize;
         }
     }
@@ -131,26 +129,13 @@ BaseRoom.prototype.drawSidewalk = function (initY) {
 
 BaseRoom.prototype.drawBuildings = function (initY) {
 
-    //var cont = 0;
-    //for (x = 0; x < Math.ceil(gameInstance.phaserGame.world._width) ; x) {
-    //    var n = Math.floor((Math.random() * this.graphs.buildingsGraphs.length));
-    //    var image = gameInstance.phaserGame.cache.getImage(this.graphs.buildingsGraphs[n]);
-    //    this.buildingsArray[cont] = this.graphs.buildingsGraphs[n];
-    //    cont++;
-    //    temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, this.graphs.buildingsGraphs[n]);
-    //    gameInstance.bgGroup.add(temp);
-    //    this.currentY = temp.y - temp.height;
-    //    x += temp.width;
-    //}
-
-    var cont = 0;
-    for (x = 0; x < Math.ceil(gameInstance.phaserGame.world._width) ; x) {
-        var image = gameInstance.phaserGame.cache.getImage(this.buildingsArray[cont]);
-        temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, this.buildingsArray[cont]);
+    var x = 0;
+    for (i = 0; i < this.buildingsArray.length; i++) {
+        var image = gameInstance.phaserGame.cache.getImage(this.buildingsArray[i]);
+        temp = gameInstance.phaserGame.add.sprite(x, initY - image.height, this.buildingsArray[i]);
         gameInstance.bgGroup.add(temp);
         this.currentY = temp.y - temp.height;
         x += temp.width;
-        cont++;
     }
 
 }
