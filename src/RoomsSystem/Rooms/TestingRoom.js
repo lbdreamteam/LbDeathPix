@@ -1,11 +1,26 @@
 ﻿TestingRoom = function () {
-    this.buildingsGraphs = ['building', 'building1'];
-    this.sidewalkGraph = 'sidewalk';
-    this.roadGraphs = { road: 'road', roadLine: 'roadLine' };
-    this.foregroundGraph = 'sidewalk';
-    this.backgroundGraph = 'bg';
+    this.buildingsGraphs = [{ key: 'building', url: 'assets/placeholders/building.png' }, { key: 'building1', url: 'assets/placeholders/building1.png' }, { key: 'building2', url: 'assets/palace.png' }];
+    this.sidewalkGraph = { key: 'sidewalk', url: 'assets/placeholders/sidewalk.png' };
+    this.roadGraphs = { road: { key: 'road', url: 'assets/placeholders/road.png' }, roadLine: { key: 'roadLine', url: 'assets/placeholders/roadLine.png' }};
+    this.foregroundGraph = { key: 'foreground', url: 'assets/placeholders/town.png' };
+    this.backgroundGraph = {key: 'bg', url: 'assets/placeholders/bg.png'};
+    this.buildingsArray = [{ x: 0, graph: 'building' }, { x: 70, graph: 'building1' }, { x: 150, graph: 'building2' }];
 
-    BaseRoom.call(this, { graphs: { buildingsGraphs: this.buildingsGraphs, foregroundGraph: this.foregroundGraph, roadGraphs: this.roadGraphs, sidewalkGraph: this.sidewalkGraph, backgroundGraph: this.backgroundGraph }, proportions: { road: 1 / 2, sidewalk: 1 / 10, foreground: 1 / 10 }, buildingsArray: ['building', 'building1', 'building', 'building1', 'building', 'building1', 'building', 'building1', 'building1', 'building', 'building', 'building', 'building', 'building1', 'building', 'building1', 'building', 'building', 'building1', 'building', 'building', 'building1', 'building', 'building1', 'building1'] });
+    this.MapJSON = {
+        graphs: {
+            buildingsGraphs: this.buildingsGraphs,
+            foregroundGraph: this.foregroundGraph,
+            roadGraphs: this.roadGraphs,
+            sidewalkGraph: this.sidewalkGraph,
+            backgroundGraph: this.backgroundGraph
+        },
+        proportions: {
+            road: 1 / 2, sidewalk: 1 / 10, foreground: 1 / 10
+        },
+        buildingsArray: this.buildingsArray
+    };
+
+    BaseRoom.call(this, this.MapJSON);
 }
 
 TestingRoom.prototype = Object.create(BaseRoom.prototype);
@@ -14,14 +29,8 @@ TestingRoom.prototype.constructor = TestingRoom;
 TestingRoom.prototype.preload = function () {
     BaseRoom.prototype.preload.call(this);
 
+    gameInstance.phaserGame.load.crossOrigin = 'anonymous';
     gameInstance.loadImage('player', 'assets/player.png');
-    gameInstance.loadImage('tree', 'assets/tree.png');
-    gameInstance.phaserGame.load.image('road', 'assets/placeholders/road.png');
-    gameInstance.phaserGame.load.image('roadLine', 'assets/placeholders/roadLine.png');
-    gameInstance.phaserGame.load.image('sidewalk', 'assets/placeholders/sidewalk.png');
-    gameInstance.phaserGame.load.image('building', 'assets/placeholders/building.png');
-    gameInstance.phaserGame.load.image('building1', 'assets/placeholders/building1.png');
-    gameInstance.phaserGame.load.image('bg', 'assets/placeholders/bg.png');
 }
 
 TestingRoom.prototype.create = function() {
