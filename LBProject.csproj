@@ -18,15 +18,20 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="assets\container.png" />
+    <Content Include="assets\palace.png" />
     <Content Include="assets\placeholders\bg.png" />
     <Content Include="assets\placeholders\building.png" />
     <Content Include="assets\placeholders\building1.png" />
     <Content Include="assets\placeholders\menu_btn.png" />
     <Content Include="assets\placeholders\road.png" />
+    <Content Include="assets\placeholders\roadLine.png" />
     <Content Include="assets\placeholders\sidewalk.png" />
     <Content Include="assets\placeholders\tileset.png" />
     <Content Include="assets\placeholders\town.png" />
     <Content Include="assets\player.png" />
+    <Content Include="assets\playerMatrix.json" />
+    <Content Include="assets\shop.png" />
     <Content Include="assets\tree.png" />
     <Content Include="assets\treeMatrix.json" />
     <Content Include="index.html" />
@@ -37,22 +42,28 @@
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBShootingComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBSnappingComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\LBBaseComponent.js" />
+    <Content Include="LB Library\Engine\ComponentsSystem\LBComponentsManager.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\LBGame components\LBDepthComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\LBGame components\LBPixelPerfectCollisionComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\LBSignal.js" />
     <Content Include="LB Library\Engine\Connections\LBOtherPlayersManager.js" />
     <Content Include="LB Library\Engine\Connections\LBOtherPlayersWorker.js" />
     <Content Include="LB Library\Engine\Connections\LBOtherPlayerWorkerClass.js" />
-    <Content Include="LB Library\Engine\ComponentsSystem\LBComponentsManager.js" />
-    <Content Include="LB Library\Engine\LBGlobalVariables.js" />
     <Content Include="LB Library\Engine\LBGame.js" />
+    <Content Include="LB Library\Engine\LBGlobalVariables.js" />
     <Content Include="LB Library\Engine\LBSprite.js" />
     <Content Include="LB Library\Engine\LBState.js" />
     <Content Include="LB Library\Entities\LBOtherPlayer.js" />
     <Content Include="LB Library\Entities\LBPlayer.js" />
+    <Content Include="LB Library\Entities\LBTestingTree.js" />
     <Content Include="LB Library\UI\LBButton.js" />
     <Content Include="LB Library\Utility\Elements\LBHashTable.js" />
     <Content Include="LB Library\Utility\phaser.js" />
+    <Content Include="Map API\LBMapAPI.js" />
+    <Content Include="Map API\ServerModules\LBAPIModule.js" />
+    <Content Include="Map API\ServerModules\LBClientsManagerModule.js" />
+    <Content Include="Map API\ServerModules\LBPrivateHandlersModule.js" />
+    <Content Include="Map API\ServerModules\LBServerModule.js" />
     <Content Include="server.js" />
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +75,7 @@
     <Content Include="src\RoomsSystem\BaseRoom.js" />
     <Content Include="src\RoomsSystem\Rooms\TestingRoom.js" />
     <Content Include="web.config" />
-    <Content Include="assets\playerMatrix.json" />
+    <Content Include="assets\graphsJSON.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -73,7 +84,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Map API\" />
+    <Folder Include="LB Library\Entities\ObjectsSystem\InventoryObjects\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

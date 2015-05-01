@@ -6,9 +6,9 @@ var LBApiInstance = LBApi.create(
 	'eu-west-1',
 	[
 		{
-			'action' : 'createJson',
-			'params' : [],
-			'function' : generateJSON
+		    'action': 'createJson',
+		    'params': [],
+		    'function': generateJSON
 		}
 	]
 
@@ -19,18 +19,18 @@ var MapJSON = {};
 
 function generateJSON(params) {
 
-	MapJSON = {
-		world : {},
-		graphs : {
-			buildingsGraphs : [],
-			sidewalkGraph : {},
-			roadGraphs : {},
-			foregroundGraph : {},
-			backgroundGraph : {}
-		},
-		proportions : {},
-		buildingsArray : []
-	}
+    MapJSON = {
+        world: {},
+        graphs: {
+            buildingsGraphs: [],
+            sidewalkGraph: {},
+            roadGraphs: {},
+            foregroundGraph: {},
+            backgroundGraph: {}
+        },
+        proportions: {},
+        buildingsArray: []
+    }
 
 	fillJSON();	
 }
@@ -59,13 +59,13 @@ function fillJSON() {
       			console.log("Loaded " + data.ContentLength + " bytes");
       			graphsJSON = JSON.parse(data.Body.toString('utf8'));
 
-      			MapJSON.graphs.backgroundGraph = {key: getRandomString(8), url: graphsJSON.backgrounds[getRandomInt(0, graphsJSON.backgrounds.length)].url};
-      			MapJSON.graphs.foregroundGraph = {key: getRandomString(8), url: graphsJSON.foregrounds[getRandomInt(0, graphsJSON.foregrounds.length)].url};
-      			MapJSON.graphs.roadGraphs = { 
-      				road: {key: getRandomString(8), url: graphsJSON.roads[getRandomInt(0, graphsJSON.roads.length)].url},
-      				roadLine : {key: getRandomString(8), url: graphsJSON.roadLines[getRandomInt(0, graphsJSON.roadLines.length)].url}
+      			MapJSON.graphs.backgroundGraph = { key: getRandomString(8), url: graphsJSON.backgrounds[getRandomInt(0, graphsJSON.backgrounds.length)].url };
+      			MapJSON.graphs.foregroundGraph = { key: getRandomString(8), url: graphsJSON.foregrounds[getRandomInt(0, graphsJSON.foregrounds.length)].url };
+      			MapJSON.graphs.roadGraphs = {
+      			    road: { key: getRandomString(8), url: graphsJSON.roads[getRandomInt(0, graphsJSON.roads.length)].url },
+      			    roadLine: { key: getRandomString(8), url: graphsJSON.roadLines[getRandomInt(0, graphsJSON.roadLines.length)].url }
       			}
-      			MapJSON.graphs.sidewalkGraph = {key: getRandomString(8), url: graphsJSON.sidewalks[getRandomInt(0, graphsJSON.sidewalks.length)].url}
+      			MapJSON.graphs.sidewalkGraph = { key: getRandomString(8), url: graphsJSON.sidewalks[getRandomInt(0, graphsJSON.sidewalks.length)].url }
 
       			console.log(MapJSON);
     		}
@@ -84,7 +84,7 @@ function getRandomString(length)
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < length; i++ )
+    for (var i = 0; i < length; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
