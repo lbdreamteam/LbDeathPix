@@ -5,13 +5,13 @@
     this.calls = { counter: 0, calls: new LBHashTable() }; //--> DA RIVEDERE TUTTA LA RECONCILIATION <--
     this.cursors = gameInstance.phaserGame.input.keyboard.createCursorKeys(); // --> CERCARE DI INSERIRE NEL COMPONENTE <--
     //Controllo dello ZDepth
-
+    this.zDepth = 0.6;
     //Componenti
     this.cKeyboardInput = new LBKeyboardInputComponent(this);
-    if (gameInstance.overlap) this.cOverlap = new LBOverlapComponent(this);
-    this.cMovement = new LBMovementComponent(this);
     this.cSnapping = new LBSnappingComponent(this);
     this.cCollidingMovement = new LBCollidingMovementComponent(this);
+    if (gameInstance.overlap) this.cOverlap = new LBOverlapComponent(this);
+    this.cMovement = new LBMovementComponent(this);
 }
 
 LBPlayer.prototype = Object.create(LBSprite.prototype);
@@ -28,12 +28,10 @@ LBPlayer.prototype.update = function () {
                     context.calls.counter++;
                     context.calls.calls.setItem(context.calls.counter, { id: context.calls.counter, input: context.cKeyboardInput.inputString });
                     eurecaServer.ClientManagement.Player.SendInput(increment, myId, context.calls.counter);
-                    if (gameInstance.overlap) context.cOverlap.findCollidableObject(context.cKeyboardInput.increment);
                 },
                 function (context) {
                     context.currentTile.x += context.cKeyboardInput.increment.x;
                     context.currentTile.y += context.cKeyboardInput.increment.y;
-                    if (gameInstance.overlap) context.cOverlap.checkOverlap(true);
                 },
                 this.cKeyboardInput.increment,
                 175,
@@ -41,9 +39,7 @@ LBPlayer.prototype.update = function () {
            );
         };
     }
-    else {
-        if (this.cMovement.isMoving) this.cOverlap.checkOverlap(false);
-    }
+    this.componentsManager.update();
 }
 
 LBPlayer.prototype.updatePosition = function (x, y, callId) {

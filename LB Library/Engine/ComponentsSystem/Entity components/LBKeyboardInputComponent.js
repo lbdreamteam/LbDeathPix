@@ -6,6 +6,8 @@ LBKeyboardInputComponent = function (agent) {
     this.increment = { x: 0, y: 0 };
 
     this.isGridEnabled = gameInstance.mapMovementMatrix ? true : false;
+    this.createParameters( { direction: this.increment } );
+    //this.sendUpdate(function() { console.log('KeyboardInput Component'); }, [], ['direction']);
 }
 
 LBKeyboardInputComponent.prototype = Object.create(LBBaseComponent.prototype);
@@ -23,6 +25,9 @@ LBKeyboardInputComponent.prototype.detectInput = function (cursors) {
 
         this.targetPoint = { x: this.agent.currentTile.x + this.increment.x, y: this.agent.currentTile.y + this.increment.y };
     }
+
+    this.componentsManager.Parameters['direction'] = this.increment;
+
     return this.inputString;
 }
 

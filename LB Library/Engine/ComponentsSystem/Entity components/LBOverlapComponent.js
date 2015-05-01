@@ -1,9 +1,11 @@
 ﻿LBOverlapComponent = function (agent) {
-    LBBaseComponent.call(this, agent);
+    LBBaseComponent.call(this, agent, LBLibrary.ComponentsTypes.Overlap);
 
     this.collidableObject = [];
     //devo fargli arrivare la direzione
-    //this.sendDelegate(this, 'startMoving', this.findCollidableObject.bind(this));
+    this.sendDelegate('startMoving', this.findCollidableObject.bind(this));
+    this.sendDelegate('endMoving', this.lastCheck.bind(this));
+    this.sendUpdate(this.update.bind(this), ['isMoving'], []);
 }
 
 LBOverlapComponent.prototype = Object.create(LBBaseComponent.prototype);
@@ -11,16 +13,14 @@ LBOverlapComponent.prototype.constructor = LBOverlapComponent;
 
 //Da chiamare una volta all'inizio del movimento, riempe collidableObject
 //Ottimizzazione: sostituire maxSpriteWidth con una indicazione della massima distanza tra il tile di appartenenza e il punto più laterale dell'oggetto (sia a destra che a sinistra)
-LBOverlapComponent.prototype.findCollidableObject = function (direction){
-	this.collidableObject = [];
-	var altoSinistra = {
-        x: this.agent.x + (1 - this.agent.anchor.x) * this.agent.width + (direction.x < 0 ? 0 : - direction.x * gameInstance.movementGridSize),
-        y: this.agent.y + (1 - this.agent.anchor.y) * this.agent.height + (direction.y < 0 ? 0 : - direction.y * gameInstance.movementGridSize),
-    },
-        xTile = Math.floor(altoSinistra.x / gameInstance.movementGridSize),                             //Coordinata x (in tile) in cui centrare l'esame
-        yTile = Math.floor(altoSinistra.y / gameInstance.movementGridSize),   //Coordinata y (in tile) in cui centrare l'esame
+LBOverlapComponent.prototype.findCollidableObject = function (){
+	var direction = this.componentsManager.Parameters['direction'];
+    this.collidableObject = [];
 
-        iStart = yTile < 0 ? -yTile : 0,
+    var xTile = this.agent.currentTile.x + (direction.x > 0 ? 0 : direction.x),
+        yTile = this.agent.currentTile.y + (direction.y > 0 ? 0 : direction.y),
+
+        iStart = yTile - gameInstance.maxTileDown < 0 ? -yTile : -gameInstance.maxTileDown,
         iEnd,
         jStart = xTile - gameInstance.maxTileSide < 0 ? -xTile : -gameInstance.maxTileSide,
         jEnd;
@@ -45,8 +45,7 @@ LBOverlapComponent.prototype.findCollidableObject = function (direction){
 }
 
 //Per tutte le sprite in una tile, verifica se è possibile che durante il movimento l'agent vada a colliderci
-LBOverlapComponent.prototype.checkTileToCollidableObject = function (actualTile, direction)
-{
+LBOverlapComponent.prototype.checkTileToCollidableObject = function (actualTile, direction){
 	if (actualTile[0] !== undefined)          //Controlla se questo tile contiene qualcosa
         for (var i = 0; i < actualTile.length; i++){
             var sprite = actualTile[i],
@@ -64,9 +63,17 @@ LBOverlapComponent.prototype.checkTileToCollidableObject = function (actualTile,
         }
 }
 
-//Durante l'update, controlla l'overlap
-LBOverlapComponent.prototype.checkOverlap = function (isLast)
-{
+//Funzione che rileva se due sprite sono sovrapposte
+LBOverlapComponent.prototype.areInOverlap = function (sprite1, sprite2){
+    var depthCheck = (gameInstance.cDepth.totalDepth(sprite1) < gameInstance.cDepth.totalDepth(sprite2)),
+        ppcResult = false;
+    if (depthCheck)
+        ppcResult = gameInstance.cPpc.CheckPixelPerfectCollision(sprite1,sprite2);
+    return depthCheck && ppcResult;
+}
+
+//Controlla l'overlap (isLast serve per indicare se è l'ultima chiamata per questo movimento)
+LBOverlapComponent.prototype.checkOverlap = function (isLast){
 	for (var i = 0; i < this.collidableObject.length; i++){
 		var sprite = this.collidableObject[i][0];
         if (isLast)
@@ -82,12 +89,14 @@ LBOverlapComponent.prototype.checkOverlap = function (isLast)
     }
 }
 
-//Funzione che rileva se una sprite e un character sono sovrapposti
-LBOverlapComponent.prototype.areInOverlap = function (character, sprite)
-{
-    var depthCheck = (gameInstance.cDepth.totalDepth(character) < gameInstance.cDepth.totalDepth(sprite)),
-        ppcResult = false;
-    if (depthCheck)
-        ppcResult = gameInstance.cPpc.CheckPixelPerfectCollision(character,sprite);
-    return depthCheck && ppcResult;
+LBOverlapComponent.prototype.lastCheck = function(){
+    this.checkOverlap(true);
+}
+
+//funzione di update dell'overlapComponent
+LBOverlapComponent.prototype.update = function(){
+    if (this.componentsManager.Parameters['isMoving']){
+        //console.log("update dell'overlapComponent");
+        this.checkOverlap(false);
+    }
 }

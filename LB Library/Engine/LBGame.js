@@ -64,11 +64,12 @@ LBGame.prototype.constructor = LBGame;
 
 //Crea la mappa dei punti di snap per i baricentri degli oggetti nel modo tile-based
 
-
+//ISSUE: MapMovementH0 non funziona, anche cambiandolo il risultato è sempre lo stesso!
+//ISSUE: Problema con il corretto posizionamento degli oggetti e dei personaggi. Non deve dipendere dalla zona del movimento!
 LBGame.prototype.createMovementMap = function (h, h0) {
     var map = {},
         zeroY = this.phaserGame.height - h0 - (h * this.movementGridSize);
-    for (var column = 1; column <= Math.floor(this.world.width / this.movementGridSize) ; column++) {
+    for (var column = 1; column <= Math.floor(this.phaserGame.width / this.movementGridSize) ; column++) {
         map[column] = {};
         for (var row = 1; row <= h; row++) map[column][row] = { x: (column * this.movementGridSize) - (this.movementGridSize / 2), y: zeroY + (row * this.movementGridSize) - (this.movementGridSize / 2) };
     }
@@ -98,7 +99,7 @@ LBGame.prototype.loadImage = function (cacheName, path) {
         if (!gameInstance.cPpc.spriteCollisionMatrix[cacheName])
             gameInstance.loadCollisionPixelMatrix(cacheName, path);
     });
-    console.log('done ' + cacheName);
+    console.log('loaded asset ' + cacheName);
 }
 
 //Crea una matrice dei pixel dell'immagine chiamata cacheName
