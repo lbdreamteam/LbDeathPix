@@ -1,0 +1,25 @@
+{
+ "backgrounds": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/bg.png" }
+  ],
+ "roads": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/road.png"}
+  ],
+ "roadLines": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/roadLine.png"}
+  ],
+ "sidewalks": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/sidewalk.png "}
+  ],
+ "foregrounds": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/town.png"}
+  ],
+ "buildings": [
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/building.png"},
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/building1.png"}, 
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/container.png"}, 
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/palace.png"},
+   {"url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/shop.png"}
+  ],
+ "foregroundElements": []
+}
