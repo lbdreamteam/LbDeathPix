@@ -14,10 +14,11 @@ var LBApiInstance = LBApi.create(
 
 );
 
+console.log(LBApiInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.0'));
 
 var MapJSON = {};
 
-function generateJSON(params) {
+function generateJSON(params, res) {
 
     MapJSON = {
         world: {},
@@ -32,10 +33,10 @@ function generateJSON(params) {
         buildingsArray: []
     }
 
-	fillJSON();	
+	fillJSON(res);	
 }
 
-function fillJSON() {
+function fillJSON(res) {
 	const worldX = 1500,
 		  worldY = 720;	
 
@@ -67,7 +68,50 @@ function fillJSON() {
       			}
       			MapJSON.graphs.sidewalkGraph = { key: getRandomString(8), url: graphsJSON.sidewalks[getRandomInt(0, graphsJSON.sidewalks.length)].url }
 
+                //EDIFICI
+      			for (x = 0; x <= worldX; x) {
+      			    var temp = graphsJSON.buildings[getRandomInt(0, graphsJSON.buildings.length)];
+      			    var tempX;
+
+      			    tempX = getRandomInt(0, Math.round(temp.width / 2));
+
+      			    if (x + tempX + temp.width < worldX) {
+
+      			        if (checkBuildingAlreadyAdded(MapJSON.graphs.buildingsGraphs, temp.url)) {
+      			            MapJSON.buildingsArray.push({ x: x + tempX, graph: MapJSON.graphs.buildingsGraphs[getBuildingAlreadyAddedIndex(MapJSON.graphs.buildingsGraphs, temp.url)].key });
+      			        }
+      			        else {
+      			            var key = getRandomString(8);
+      			            MapJSON.graphs.buildingsGraphs.push({ key: key, url: temp.url });
+      			            MapJSON.buildingsArray.push({ x: x + tempX, graph: key });
+      			        }
+
+      			    }
+
+      			    //console.log('x: ' + x + '  tempX: ' + tempX + '  temp.width: ' + temp.width + '  temp.angleX: ' + temp.angleX);
+
+      			    if (temp.hasOwnProperty('angleX')) {
+
+      			        x = x + tempX + temp.angleX;
+      			    }
+      			    else {
+      			        x = x + tempX + temp.width;
+      			    }
+
+      			    //console.log('new x: ' + x);
+      			    //console.log();
+                    
+      			}
+
+
       			console.log(MapJSON);
+      			res.json(MapJSON);
+      			//s3.putObject(
+                //    { Bucket: 'lbbucket', Key: 'map.json', Body: JSON.stringify(MapJSON)},
+                //    function (error, data) {
+                //        if (error) console.log(error);
+                //    }
+                //);
     		}
 		}
 	);
@@ -88,4 +132,12 @@ function getRandomString(length)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+}
+
+function checkBuildingAlreadyAdded (entry, prop) {
+    for (var i = 0; i < entry.length; i++) if (entry[i].url == prop) return true;
+}
+
+function getBuildingAlreadyAddedIndex(entry, prop) {
+    for (var i = 0; i < entry.length; i++) if (entry[i].url == prop) return i;
 }

@@ -1,7 +1,7 @@
 ﻿module.exports = {
     create : function() {
         return new LBPrivateHandlersModule();
-    }
+    }, 
 }
 
 LBPrivateHandlersModule = function () {
@@ -25,5 +25,4 @@ LBPrivateHandlersModule.prototype.callHandler = function (event, params, res, on
 
     for (var p in this.params[event]) if (!params[this.params[event][p]]) onError({ code: 0 });
     this.phs[event](params, res);
-    if (callback) callback();
-};
+} ;
