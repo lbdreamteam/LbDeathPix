@@ -6,7 +6,8 @@ MenuState.prototype = Object.create(LBState.prototype);
 MenuState.prototype.constructor = MenuState;
 
 MenuState.prototype.preload = function () {
-    gameInstance.phaserGame.load.image('menu_btn', 'assets/placeholders/menu_btn.png');
+    gameInstance.phaserGame.load.crossOrigin = 'anonymous';
+    gameInstance.phaserGame.load.image('menu_btn', 'https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/menuBtn.png');
 }
 
 MenuState.prototype.create = function () {

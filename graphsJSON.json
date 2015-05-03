@@ -1,0 +1,30 @@
+{
+    "backgrounds": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/bg.png" },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/sky.png" }
+    ],
+    "roads": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/road.png" },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/road2.png" }
+    ],
+    "roadLines": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/roadLine.png" },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/roadLine2.png" }
+    ],
+    "sidewalks": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/sidewalk.png " },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/sidewalk2.png " }
+    ],
+    "foregrounds": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/town.png" },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/town2.png" }
+    ],
+    "buildings": [
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/building.png", "width": 64 },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/building1.png", "width": 54 },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/container.png", "width": 88, "angleX": 75 },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/palace.png", "width": 96 },
+        { "url": "https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/shop.png", "width": 100, "angleX": 70 }
+    ],
+    "foregroundElements": [ ]
+}
