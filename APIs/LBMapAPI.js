@@ -1,22 +1,26 @@
 var express = require('express'),
-	LBApi = require('./ServerModules/LBAPIModule.js');
+	LBApi = require('./ServerModules/LBAPIModule.js'),
+    //VARIABILI DI QUESTA SPECIFICA API
+    dynDB,
+    s3;
 
-var LBApiInstance = LBApi.create(
+LBApi.create(
 	'8082',
 	'eu-west-1',
 	[
 		{
 		    'action': 'createJson',
-		    'params': [],
+		    'params': ['port'],
 		    'function': generateJSON
 		}
-	]
-
+	],
+    function (APIInstance) {
+        dynDB = APIInstance.modules['aws-sdk'].DynamoDB();
+        s3 = APIInstance.modules['aws-sdk'].S3();
+    }
 );
 
 console.log(LBApiInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.0'));
-
-var MapJSON = {};
 
 function generateJSON(params, res) {
 
@@ -33,10 +37,10 @@ function generateJSON(params, res) {
         buildingsArray: []
     }
 
-	fillJSON(res);	
+	fillJSON(params.port, MapJSON, res);	
 }
 
-function fillJSON(res) {
+function fillJSON(port, MapJSON, res) {
 	const worldX = 1500,
 		  worldY = 720;	
 
@@ -48,8 +52,6 @@ function fillJSON(res) {
 	MapJSON.proportions = { road: roadProportion, sidewalk: sidewalkProportion, foreground: foregroundProportion}
 
 	var graphsJSON = {};
-
-	var s3 = new LBApiInstance.modules['aws-sdk'].S3();
 	s3.getObject(
 		{Bucket: "lbbucket", Key: "graphsJSON.json"},
 		function (error, data) {
@@ -105,7 +107,28 @@ function fillJSON(res) {
 
 
       			console.log(MapJSON);
-      			res.json(MapJSON);
+      			dynDB.updateItem({
+      			    'TableName': 'activeGames',
+      			    'UpdateExpression': 'SET map :smap',
+      			    'Key': {
+      			        'index': {
+      			            'N': port.toString()
+      			        }
+      			    },
+      			    'ExpressionAttributeValues': {
+      			        ':smap': {
+      			            'S': JSON.stringify(MapJSON)
+      			        },
+      			        ':val': {
+      			            'S': '-->MAP<--'
+      			        }
+      			    },
+      			    'ConditionExpression': 'map = :val'
+      			}, function (err, data) {
+      			    if (err) res.json({ err: err })
+      			    else res.json({ response: true })
+      			});
+			    //res.json(MapJSON);
       			//s3.putObject(
                 //    { Bucket: 'lbbucket', Key: 'map.json', Body: JSON.stringify(MapJSON)},
                 //    function (error, data) {

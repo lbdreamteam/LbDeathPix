@@ -18,6 +18,10 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="APIs\LBCentralAPI.js" />
+    <Content Include="APIs\LBMapAPI.js" />
+    <Content Include="APIs\ServerModules\LBAPIModule.js" />
+    <Content Include="APIs\ServerModules\LBPrivateHandlersModule.js" />
     <Content Include="index.html" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBCollidingMovementComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBKeyboardInputComponent.js" />
@@ -43,9 +47,6 @@
     <Content Include="LB Library\UI\LBButton.js" />
     <Content Include="LB Library\Utility\Elements\LBHashTable.js" />
     <Content Include="LB Library\Utility\phaser.js" />
-    <Content Include="Map API\LBMapAPI.js" />
-    <Content Include="Map API\ServerModules\LBAPIModule.js" />
-    <Content Include="Map API\ServerModules\LBPrivateHandlersModule.js" />
     <Content Include="server.js" />
   </ItemGroup>
   <ItemGroup>
