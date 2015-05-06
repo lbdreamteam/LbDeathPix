@@ -8,6 +8,14 @@ LBApi.create(
 	'8082',
 	'eu-west-1',
 	[
+        {
+            'action': 'test',
+            'params': ['nome'],
+            'function': function (params, res) {
+                res.json({ response: 'test' });
+            }
+        },
+
 		{
 		    'action': 'createJson',
 		    'params': ['port'],
