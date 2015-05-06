@@ -15,12 +15,12 @@ LBApi.create(
 		}
 	],
     function (APIInstance) {
-        dynDB = APIInstance.modules['aws-sdk'].DynamoDB();
-        s3 = APIInstance.modules['aws-sdk'].S3();
+        dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
+        s3 = new APIInstance.modules['aws-sdk'].S3();
+
+        console.log(APIInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.0'));
     }
 );
-
-console.log(LBApiInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.0'));
 
 function generateJSON(params, res) {
 

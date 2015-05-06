@@ -217,7 +217,7 @@ LBApi.create(
 		dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
 		exec = APIInstance.modules['child_process'].exec;
 		http = APIInstance.modules['http'];
+
+		console.log(APIInstance.modules['cli-color'].red.bgWhite('LBCentralApi v0.0.1.0'));
 	}
 );
-
-console.log(LBApiInstance.modules['cli-color'].red.bgWhite('LBCentralApi v0.0.1.0'));

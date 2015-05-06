@@ -2,7 +2,7 @@ module.exports = {
 	create: function(port, AWSregion, pHandlers, initCallback, enableCORS, extraPackages) {
 		return new LBAPI(port, AWSregion, pHandlers, initCallback, enableCORS, extraPackages);
 	},
-    version : 'v0.0.0.1.3'
+    version : 'v0.0.1.3'
 }
 
 LBAPI = function(port, AWSregion, pHandlers, initCallback, enableCORS, extraPackages) {

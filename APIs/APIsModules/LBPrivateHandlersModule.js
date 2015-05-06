@@ -2,7 +2,7 @@
     create : function() {
         return new LBPrivateHandlersModule();
     },
-    version: 'v0.0.0.1.3'
+    version: 'v0.0.1.3'
 }
 
 LBPrivateHandlersModule = function () {
