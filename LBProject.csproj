@@ -18,10 +18,10 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="APIs\APIsModules\LBAPIModule.js" />
+    <Content Include="APIs\APIsModules\LBPrivateHandlersModule.js" />
     <Content Include="APIs\LBCentralAPI.js" />
     <Content Include="APIs\LBMapAPI.js" />
-    <Content Include="APIs\ServerModules\LBAPIModule.js" />
-    <Content Include="APIs\ServerModules\LBPrivateHandlersModule.js" />
     <Content Include="index.html" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBCollidingMovementComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBKeyboardInputComponent.js" />

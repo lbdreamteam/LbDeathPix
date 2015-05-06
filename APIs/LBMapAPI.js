@@ -1,5 +1,5 @@
 var express = require('express'),
-	LBApi = require('./ServerModules/LBAPIModule.js'),
+	LBApi = require('./APIsModules/LBAPIModule.js'),
     //VARIABILI DI QUESTA SPECIFICA API
     dynDB,
     s3;

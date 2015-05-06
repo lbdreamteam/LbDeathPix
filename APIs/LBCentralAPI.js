@@ -1,5 +1,5 @@
 var express = require('express'),
-	LBApi = require('./ServerModules/LBAPIModule.js'),
+	LBApi = require('./APIsModules/LBAPIModule.js'),
 	//VARIABILI DI QUESTA SPECIFICA API
 	dynDB,
 	exec,
@@ -219,3 +219,5 @@ LBApi.create(
 		http = APIInstance.modules['http'];
 	}
 );
+
+console.log(LBApiInstance.modules['cli-color'].red.bgWhite('LBCentralApi v0.0.1.0'));
