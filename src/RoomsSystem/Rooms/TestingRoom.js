@@ -20,7 +20,7 @@
     //    buildingsArray: this.buildingsArray
     //};
 
-    this.MapJSON = gameInstance.phaserGame.cache.getJSON('jsonMap');
+    this.MapJSON = jsonMap;
 
     BaseRoom.call(this, this.MapJSON);
 }

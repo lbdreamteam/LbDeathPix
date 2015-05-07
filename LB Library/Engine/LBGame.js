@@ -162,7 +162,8 @@ LBGame.prototype.gameSetup = function () { //funzione richiamata dal create del 
     });
 
     /************ FUNZIONI DISPONIBILI LATO SERVER ************/
-    eurecaClient.exports.createGame = function (id, Tx, Ty) {
+    eurecaClient.exports.createGame = function (id, Tx, Ty, _port) {
+        port = _port;
         myId = id;
         gameInstance.playerSpawnPoint = { x: Tx, y: Ty };
         create();

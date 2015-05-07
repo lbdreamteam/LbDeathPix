@@ -32,7 +32,7 @@ LBApi.create(
         dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
         s3 = new APIInstance.modules['aws-sdk'].S3();
 
-        console.log(APIInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.1'));
+        console.log(APIInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.2'));
     }
 );
 
@@ -205,6 +205,6 @@ function downloadMap(params, res) {
             res.statusCode = 601;
             res.send('AWS Dynamo DB');
         }
-        else res.json({ response: true })
+        else res.json({ response: JSON.parse(data.Item.map.S) })
     });
 }

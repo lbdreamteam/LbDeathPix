@@ -36,7 +36,7 @@ eurecaServer.onConnect(function (conn) {
     clients[conn.id] = { id: conn.id, remote: remote, state: { x: 1, y: 1 } };
     posTable.oldPos[conn.id] = clients[conn.id].state;
     posTable.nowPos[conn.id] = clients[conn.id].state;
-    remote.createGame(conn.id, clients[conn.id].state.x, clients[conn.id].state.y);
+    remote.createGame(conn.id, clients[conn.id].state.x, clients[conn.id].state.y, process.argv[2]);
     remote.spawnOtherPlayers(posTable);
     remote.spawnOtherPlayers(clients);
     for (var client in clients) {

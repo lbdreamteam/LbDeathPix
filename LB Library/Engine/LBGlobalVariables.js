@@ -3,6 +3,7 @@
 tramite i costruttori SOLO quelle*/
 var eurecaClient,
     eurecaServer,
+    port,
     gameInstance,
     myId = 0;
     LBLibrary = (function () {
