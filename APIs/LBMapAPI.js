@@ -117,11 +117,14 @@ function fillJSON(port, MapJSON, res) {
       			console.log(MapJSON);
       			dynDB.updateItem({
       			    'TableName': 'activeGames',
-      			    'UpdateExpression': 'SET map :smap',
+      			    'UpdateExpression': 'SET #map = :smap',
       			    'Key': {
       			        'index': {
       			            'N': port.toString()
       			        }
+      			    },
+      			    'ExpressionAttributeNames' : {
+                        '#map' : 'map'
       			    },
       			    'ExpressionAttributeValues': {
       			        ':smap': {
