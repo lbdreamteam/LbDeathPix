@@ -26,7 +26,7 @@ LBApi.create(
         dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
         s3 = new APIInstance.modules['aws-sdk'].S3();
 
-        console.log(APIInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.0'));
+        console.log(APIInstance.modules['cli-color'].red.bgWhite('LBMapApi v0.0.1.1'));
     }
 );
 
@@ -119,7 +119,7 @@ function fillJSON(port, MapJSON, res) {
       			    'TableName': 'activeGames',
       			    'UpdateExpression': 'SET #map = :smap',
       			    'Key': {
-      			        'index': {
+      			        'port': {
       			            'N': port.toString()
       			        }
       			    },
@@ -134,7 +134,7 @@ function fillJSON(port, MapJSON, res) {
       			            'S': '-->MAP<--'
       			        }
       			    },
-      			    'ConditionExpression': 'map = :val'
+      			    'ConditionExpression': '#map = :val'
       			}, function (err, data) {
       			    if (err) res.json({ err: err })
       			    else res.json({ response: true })

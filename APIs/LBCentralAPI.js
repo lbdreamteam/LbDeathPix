@@ -148,7 +148,7 @@ LBApi.create(
                     			            console.log('Error: ' + e);
                     			        })
                     			        mapResponse.on('data', function (buffer) {
-                    			            if (JSON.parse(buffer.toString('utf8')).err) res.json({ err: err });
+                    			            if (JSON.parse(buffer.toString('utf8')).err) res.json({ err: JSON.parse(buffer.toString('utf8')).err });
                     			            if (JSON.parse(buffer.toString('utf8')).response) res.redirect('http://52.17.92.120:' + port);
                     			        });
                     			    });
@@ -222,6 +222,6 @@ LBApi.create(
 		http = APIInstance.modules['http'],
         cli = APIInstance.modules['cli-color'];
 
-		console.log(APIInstance.modules['cli-color'].green.bgWhite('LBCentralApi v0.0.1.0'));
+		console.log(APIInstance.modules['cli-color'].green.bgWhite('LBCentralApi v0.0.1.1'));
 	}
 );
