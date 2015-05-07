@@ -3,7 +3,8 @@ var express = require('express'),
 	//VARIABILI DI QUESTA SPECIFICA API
 	dynDB,
 	exec,
-    http;
+    http,
+    cli;
 
 LBApi.create(
 	'8081', 
@@ -13,7 +14,11 @@ LBApi.create(
 			'action' : 'test',
 			'params' : ['nome'],
 			'function' : function(params, res) {
-				res.json({response : 'test'});
+			    http.get('http://localhost:8082/LBApi/test?nome=ciao', function (response) {
+			        response.on('data', function (chunk) {
+			            console.log(chunk.toString('utf8'));
+			        })
+			    })
 			}
 		},
 
@@ -136,18 +141,16 @@ LBApi.create(
                         			}
                     			}, function (err, data) {
                     			    if (err) res.json({ err: err });
-                                    //CREA LA NUOVA MAPPA TRAMITE LA API E LA STORA IN DYNDB
-                    			    else http.request({
-                    			        host: '52.17.92.120',
-                    			        port: '8082',
-                    			        path: '/LBApi/createJson?port=' + port,
-                                        method: 'GET'
-                    			    }, function (MAPres) {
-                    			        MAPres.setEncoding('utf8');
-                    			        MAPres.on('data', function (chunk) {
-                    			            if (chunk.err) res.json(chunk)
-                    			            else if (chunk.response) res.redirect('http://52.17.92.120:' + port);
+                    			        //CREA LA NUOVA MAPPA TRAMITE LA API E LA STORA IN DYNDB
+                    			    else http.get('http://52.17.92.120:8082/createMap?port' + port, function (mapResponse) {
+                    			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);
+                    			        mapResponse.on('error', function (e) {
+                    			            console.log(cli.red('Error from MAP API: ' + e));
+                                            //buttare giù l'istanza
                     			        });
+                    			        mapResponse.on('data', function (buffer) {
+                    			            if (JSON.parse(buffer.toString('utf8').response)) res.redirect('http://52.17.92.120:' + port);
+                    			        })
                     			    });
                     			});
                 			}
@@ -216,8 +219,9 @@ LBApi.create(
 	function(APIInstance) {
 		dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
 		exec = APIInstance.modules['child_process'].exec;
-		http = APIInstance.modules['http'];
+		http = APIInstance.modules['http'],
+        cli = APIInstance.modules['cli-color'];
 
-		console.log(APIInstance.modules['cli-color'].red.bgWhite('LBCentralApi v0.0.1.0'));
+		console.log(APIInstance.modules['cli-color'].green.bgWhite('LBCentralApi v0.0.1.0'));
 	}
 );

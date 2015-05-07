@@ -12,12 +12,12 @@ LBApi.create(
             'action': 'test',
             'params': ['nome'],
             'function': function (params, res) {
-                res.json({ response: 'test' });
+                res.json({ response: params.nome + ' sono la MAP API' });
             }
         },
 
 		{
-		    'action': 'createJson',
+		    'action': 'createMap',
 		    'params': ['port'],
 		    'function': generateJSON
 		}
