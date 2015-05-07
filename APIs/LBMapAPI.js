@@ -19,8 +19,14 @@ LBApi.create(
 		{
 		    'action': 'createMap',
 		    'params': ['port'],
-		    'function': generateJSON
-		}
+		    'function': generateMap
+		},
+
+        {
+            'action': 'downloadMap',
+            'params': ['port'],
+            'function': downloadMap
+        }
 	],
     function (APIInstance) {
         dynDB = new APIInstance.modules['aws-sdk'].DynamoDB();
@@ -30,7 +36,7 @@ LBApi.create(
     }
 );
 
-function generateJSON(params, res) {
+function generateMap(params, res) {
 
     MapJSON = {
         world: {},
@@ -178,4 +184,27 @@ function checkBuildingAlreadyAdded (entry, prop) {
 
 function getBuildingAlreadyAddedIndex(entry, prop) {
     for (var i = 0; i < entry.length; i++) if (entry[i].url == prop) return i;
+}
+
+
+function downloadMap(params, res) {
+    dynDB.getItem({
+        'AttributesToGet': [
+            'map'
+        ],
+        'TableName': 'activeGames',
+        'Key': {
+            'port': {
+                'N': params.port.toString()
+            }
+        }
+    },
+    function (err, data) {
+        if (err) {
+            console.log('AWS Dynamo DB error: ' + err);
+            res.statusCode = 601;
+            res.send('AWS Dynamo DB');
+        }
+        else res.json({ response: true })
+    });
 }
