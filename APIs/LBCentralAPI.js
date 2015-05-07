@@ -74,7 +74,7 @@ LBApi.create(
         			},
         			'TableName': 'ports'
     			}, function (err, data) {
-        			if (err) console.log(err);
+        			if (err) console.log('sono il log dell errore nel create ' + err);
         			else {
             			var port = data.Item.pull.NS[Math.floor(Math.random() * data.Item.pull.NS.length)];
             			console.log('pulllength : ' + data.Item.pull.NS.length + ' port: ' + port);
@@ -142,15 +142,15 @@ LBApi.create(
                     			}, function (err, data) {
                     			    if (err) res.json({ err: err });
                     			        //CREA LA NUOVA MAPPA TRAMITE LA API E LA STORA IN DYNDB
-                    			    else http.get('http://52.17.92.120:8082/createMap?port' + port, function (mapResponse) {
-                    			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);
+                    			    else http.get('http://52.17.92.120:8082/LBApi/createMap?port=' + port, function (mapResponse) {
+                    			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);                    	
                     			        mapResponse.on('error', function (e) {
-                    			            console.log(cli.red('Error from MAP API: ' + e));
-                                            //buttare giù l'istanza
-                    			        });
-                    			        mapResponse.on('data', function (buffer) {
-                    			            if (JSON.parse(buffer.toString('utf8').response)) res.redirect('http://52.17.92.120:' + port);
+                    			            console.log('Error: ' + e);
                     			        })
+                    			        mapResponse.on('data', function (buffer) {
+                    			            if (JSON.parse(buffer.toString('utf8')).err) res.json({ err: err });
+                    			            if (JSON.parse(buffer.toString('utf8')).response) res.redirect('http://52.17.92.120:' + port);
+                    			        });
                     			    });
                     			});
                 			}
