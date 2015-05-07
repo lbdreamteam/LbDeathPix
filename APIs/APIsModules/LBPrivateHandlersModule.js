@@ -10,6 +10,7 @@ LBPrivateHandlersModule = function () {
 
     this.params = {};
     this.phs = {};
+    this.actions = {};
 
     this.init();
     this.start();
@@ -27,16 +28,29 @@ LBPrivateHandlersModule.prototype.start = function () {
 };
 
 LBPrivateHandlersModule.prototype.addHandler = function (event, params, pHandler) {
+    this.actions[event] = event;
     this.params[event] = params;
     this.phs[event] = pHandler;
 };
 
 LBPrivateHandlersModule.prototype.callHandler = function (event, params, res, onError, callback) {
     onError = onError || function (err) {
-        console.error('ERROR --At ' + event + '--Code: ' + err.code);
-        return;
+        console.error('ERROR --At ' + event + ' params are not correct --Code: ' + err.code + '; aborting operation...');
+        res.statusCode = 400;
+        res.send();
     };
 
-    for (var p in this.params[event]) if (!params[this.params[event][p]]) onError({ code: 0 });
+    if (!this.actions[event]) {
+        console.log('Action ' + event + ' not permitted.');
+        onError({ code: 400 });
+        return;
+    }
+
+    for (var p in this.params[event]) if (!params[this.params[event][p]]) {
+        onError({ code: 400 });
+        return;
+    }
+
     this.phs[event](params, res);
 };
+

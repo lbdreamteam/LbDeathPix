@@ -143,14 +143,21 @@ LBApi.create(
                     			    if (err) res.json({ err: err });
                     			        //CREA LA NUOVA MAPPA TRAMITE LA API E LA STORA IN DYNDB
                     			    else http.get('http://52.17.92.120:8082/LBApi/createMap?port=' + port, function (mapResponse) {
-                    			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);                    	
-                    			        mapResponse.on('error', function (e) {
-                    			            console.log('Error: ' + e);
-                    			        })
-                    			        mapResponse.on('data', function (buffer) {
-                    			            if (JSON.parse(buffer.toString('utf8')).err) res.json({ err: JSON.parse(buffer.toString('utf8')).err });
-                    			            if (JSON.parse(buffer.toString('utf8')).response) res.redirect('http://52.17.92.120:' + port);
-                    			        });
+                    			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);
+                    			        switch (mapResponse.statusCode) {
+                    			            case 200:
+                    			                mapResponse.on('data', function (buffer) {
+                    			                    if (JSON.parse(buffer.toString('utf8')).response) res.redirect('http://52.17.92.120:' + port);
+                    			                });
+                    			                break;
+                    			            case 601:
+                    			                res.send('AWS Dynamo DB error, see Map API log for more information');
+                    			                break;
+                    			            default: 
+                    			                res.statusCode = 999;
+                    			                res.send('Exception non handled');
+                    			                break;
+                    			        }
                     			    });
                     			});
                 			}

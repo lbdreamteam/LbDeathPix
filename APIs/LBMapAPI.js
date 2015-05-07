@@ -136,7 +136,11 @@ function fillJSON(port, MapJSON, res) {
       			    },
       			    'ConditionExpression': '#map = :val'
       			}, function (err, data) {
-      			    if (err) res.json({ err: err })
+      			    if (err) {
+      			        console.log('AWS Dynamo DB error: ' + err);
+      			        res.statusCode = 601;
+      			        res.send('AWS Dynamo DB');
+      			    }
       			    else res.json({ response: true })
       			});
 			    //res.json(MapJSON);
