@@ -149,13 +149,6 @@ function fillJSON(port, MapJSON, res) {
       			    }
       			    else res.json({ response: true })
       			});
-			    //res.json(MapJSON);
-      			//s3.putObject(
-                //    { Bucket: 'lbbucket', Key: 'map.json', Body: JSON.stringify(MapJSON)},
-                //    function (error, data) {
-                //        if (error) console.log(error);
-                //    }
-                //);
     		}
 		}
 	);

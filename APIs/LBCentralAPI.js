@@ -141,7 +141,6 @@ LBApi.create(
                         			}
                     			}, function (err, data) {
                     			    if (err) res.json({ err: err });
-                    			        //CREA LA NUOVA MAPPA TRAMITE LA API E LA STORA IN DYNDB
                     			    else http.get('http://52.17.92.120:8082/LBApi/createMap?port=' + port, function (mapResponse) {
                     			        console.log('Got response from MAP API --Status ' + mapResponse.statusCode);
                     			        switch (mapResponse.statusCode) {
@@ -214,7 +213,24 @@ LBApi.create(
                         			console.log('Terminated LBGame on port: ' + port);
                         			child = exec('aws ec2 revoke-security-group-ingress --group-id sg-0787d562 --protocol tcp --port ' + port + ' --cidr 0.0.0.0/0 --region eu-west-1');
                         			console.log('Closed port: ' + port);
-                        			res.json({ response: true });
+                        			dynDB.deleteItem({
+                                        'TableName' : 'activeGames',
+                        			    'Key': {
+                        			        'port': {
+                                                'N' : port
+                        			        }
+                        			    }
+                        			}, function (err, data) {
+                        			    if (err) {
+                        			        console.log('AWS Dynamo DB error: ' + err);
+                        			        res.statusCode = 601;
+                        			        res.send('AWS Dynamo DB');
+                        			    }
+                        			    else {
+                        			        console.log('Deleted Item from DynamoDB.activeGames at: ' + port);
+                        			        res.json({ response: true });
+                        			    }
+                        			});
                     			}
                 			});
             			}

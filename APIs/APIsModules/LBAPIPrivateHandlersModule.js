@@ -24,7 +24,7 @@ LBPrivateHandlersModule.prototype.init = function () {
 };
 
 LBPrivateHandlersModule.prototype.start = function () {
-    console.log(this.modules['cli-color'].blue.bgWhite('LB pHs ' + module.exports.version));
+    console.log(this.modules['cli-color'].blue.bgWhite('LB APIpHs ' + module.exports.version));
 };
 
 LBPrivateHandlersModule.prototype.addHandler = function (event, params, pHandler) {

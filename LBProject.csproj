@@ -19,7 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="APIs\APIsModules\LBAPIModule.js" />
-    <Content Include="APIs\APIsModules\LBPrivateHandlersModule.js" />
+    <Content Include="APIs\APIsModules\LBAPIPrivateHandlersModule.js" />
     <Content Include="APIs\LBCentralAPI.js" />
     <Content Include="APIs\LBMapAPI.js" />
     <Content Include="index.html" />
