@@ -35,7 +35,7 @@ LBAPI.prototype.init = function(AWSregion, extraPackages, initCallback) {
 	this.modules['cli-color'] = require('cli-color');
 	this.modules['http'] = require('http');
 	//LBModules
-	this.modules['LBPrivateHandlers'] = require('./LBPrivateHandlersModule.js');
+	this.modules['LBPrivateHandlers'] = require('./LBAPIPrivateHandlersModule.js');
 	if (extraPackages) for(var key in extraPackages) this.modules[key] = require(extraPackages[key]);
 	if (initCallback) initCallback(this);
 	//AWS-SDK configuration

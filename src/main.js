@@ -1,16 +1,15 @@
-﻿var jsonMap;
+﻿var jsonMap; //TODO: rivedere questa variabile, non mi piace globale!
 gameInstance = new LBGame(1280, 720, 1500, 720, 32, true, true, Phaser.AUTO, 5);
 
 function preload() {
     gameInstance.setVisibilityChangeHandlers();
-    //gameInstance.phaserGame.load.json('jsonMap', 'map.json');
-
 }
 
 function create() {
 
     console.log('port: ' + port);
 
+    //Chiamata a LBMapAPI per scaricare la mappa
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {

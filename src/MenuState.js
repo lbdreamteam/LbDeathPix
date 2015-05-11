@@ -20,5 +20,5 @@ MenuState.prototype.update = function () {
 }
 
 MenuState.prototype.callback = function () {
-    gameInstance.phaserGame.state.add('level1', TestingRoom, true);
+    gameInstance.phaserGame.state.add('stage', TestingRoom, true);
 }
