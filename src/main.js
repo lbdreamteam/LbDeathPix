@@ -74,19 +74,17 @@ gameInstance = new LBGame(
 
 function preload() {
     //TODO: spostare il caricamento delle immagini all'interno dei vari states
-    gameInstance.loadImage('tree', 'assets/tree.png');
-    gameInstance.loadImage('player', 'assets/player.png');
+    //gameInstance.loadImage('tree', 'assets/tree.png');
+    //gameInstance.loadImage('player', 'assets/player.png');
 
-    gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
-    gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
-    gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
+    //gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
+    //gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
+    //gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
 
     gameInstance.setVisibilityChangeHandlers();
 }
 
 function create() {
-    gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
-    gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
 
     console.log('port: ' + gameInstance.serverPort);
 
