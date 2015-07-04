@@ -11,7 +11,7 @@ MenuState.prototype.preload = function () {
 }
 
 MenuState.prototype.create = function () {
-    gameInstance.phaserGame.add.button(gameInstance.width / 2, gameInstance.height / 2, 'menu_btn', this.callback, this);
+    gameInstance.phaserGame.add.button(500, 200, 'menu_btn', this.callback, this);
     LBState.prototype.update.call(this);
 }
 

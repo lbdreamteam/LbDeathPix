@@ -4,10 +4,10 @@ eurecaClient.ready(function (proxy) {
 });
 
 gameInstance = new LBGame(
-    800,    //width
-    600,    //height
-    2500,   //wWidth
-    600,    //wHeight
+    1280,    //width
+    720,    //height
+    1500,   //wWidth
+    720,    //wHeight
     32,     //MovgridS
     true,   //movIn8Dir
     true,   //overlap
