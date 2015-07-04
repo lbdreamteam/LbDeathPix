@@ -70,16 +70,16 @@ gameInstance = new LBGame(
             }
         }
     ],
-    5);
+    8);
 
 function preload() {
     //TODO: spostare il caricamento delle immagini all'interno dei vari states
-    //gameInstance.loadImage('tree', 'assets/tree.png');
-    //gameInstance.loadImage('player', 'assets/player.png');
+    gameInstance.loadImage('tree', 'assets/tree.png');
+    gameInstance.loadImage('player', 'assets/player.png');
 
-    //gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
-    //gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
-    //gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
+    gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
+    gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
+    gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
 
     gameInstance.setVisibilityChangeHandlers();
 }
@@ -97,7 +97,7 @@ function create() {
             console.log(jsonMap);
             gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
             gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
-            gameInstance.phaserGame.state.add('menu', MenuState, true);
+            gameInstance.phaserGame.state.add('menu', GameState, true);
 
         }
         else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {
