@@ -35,6 +35,6 @@ TestingRoom.prototype.create = function() {
 
 var fpsText;
 
-GameState.prototype.update = function () {
+TestingRoom.prototype.update = function () {
     fpsText.setText('FPS: ' + gameInstance.phaserGame.time.fps);
 }
