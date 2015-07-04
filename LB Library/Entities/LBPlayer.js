@@ -9,7 +9,7 @@
     //Componenti
     this.cKeyboardInput = new LBKeyboardInputComponent(this);
     this.cSnapping = new LBSnappingComponent(this);
-    this.cCollidingMovement = new LBCollidingMovementComponent(this);
+    //this.cCollidingMovement = new LBCollidingMovementComponent(this);
     if (gameInstance.overlap) this.cOverlap = new LBOverlapComponent(this);
     this.cMovement = new LBMovementComponent(this);
     this.cShooting = new LBShootingComponent(this);

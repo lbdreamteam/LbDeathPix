@@ -4,10 +4,10 @@ eurecaClient.ready(function (proxy) {
 });
 
 gameInstance = new LBGame(
-    1280,    //width
-    720,    //height
+    720,    //width
+    512,    //height
     1500,   //wWidth
-    720,    //wHeight
+    512,    //wHeight
     32,     //MovgridS
     true,   //movIn8Dir
     true,   //overlap
@@ -70,7 +70,8 @@ gameInstance = new LBGame(
             }
         }
     ],
-    8);
+    10,
+    0);
 
 function preload() {
     //TODO: spostare il caricamento delle immagini all'interno dei vari states
@@ -80,7 +81,7 @@ function preload() {
     gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
     gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
     gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
-
+    console.log('font loaded');
     gameInstance.setVisibilityChangeHandlers();
 }
 
@@ -97,7 +98,7 @@ function create() {
             console.log(jsonMap);
             gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
             gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
-            gameInstance.phaserGame.state.add('menu', GameState, true);
+            gameInstance.phaserGame.state.add('menu', MenuState, true);
 
         }
         else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {

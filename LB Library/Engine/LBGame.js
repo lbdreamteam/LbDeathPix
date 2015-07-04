@@ -1,10 +1,11 @@
 ﻿LBGame = function (width, height, worldWidth, worldHeight, movementGridSize, movementInEightDirections, overlap, renderer, pHs, mapMovementH, mapMovementH0, parent, state, transparent, antialias, physicsConfig) {
 
-    //Definizione parametri opzionali
-    width = width || 800;
-    height = height || 600;
-    movementGridSize = movementGridSize || 32;
-    movementInEightDirections = movementInEightDirections || false;
+    //Definizione parametri opzionali (TODO::SISTEMARE!!)
+    this.width = width;
+    this.height = height;
+    this.mapMovementH = mapMovementH;
+    this.mapMovementH0 = mapMovementH0;
+
     if (overlap === undefined) { overlap = true }
     renderer = renderer || Phaser.AUTO;
     parent = parent || '';
@@ -12,8 +13,6 @@
     transparent = transparent || false;
     if (antialias === undefined) { antialias = true }
     physicsConfig = physicsConfig || null;
-    mapMovementH = mapMovementH || 0;
-    mapMovementH0 = mapMovementH0 || 0;
 
     //Setting degli handlers
     this.privateHandlers = new LBPrivateHandlers();
@@ -70,12 +69,14 @@ LBGame.prototype.constructor = LBGame;
 //Crea la mappa dei punti di snap per i baricentri degli oggetti nel modo tile-based
 LBGame.prototype.createMovementMap = function (h, h0) {
     //NUOIVA VERSIONE COMPATIBILE CON A* <--CONTROLLARE TUTTI I RIFERIMENTI IN GIRO AL PROGETTO
+    //Fixare h0 che non funziona.
+    console.log(h, h0, this.width, this.height);
     var map = [],
-        zeroY = this.phaserGame.height - h0 - (h * this.movementGridSize);
+        zeroY = this.world.height - h0 - (h * this.movementGridSize);
 
-    for (var column = 0; column < Math.floor(this.phaserGame.width / this.movementGridSize); column++) {
+    for (var column = 0; column <= Math.floor(this.world.width / this.movementGridSize); column++) {
         map[column] = [];
-        for (var row = 0; row < h ; row++) {
+        for (var row = 0; row < h; row++) {
             map[column][row] = { G: { x: (column + 1) * this.movementGridSize - (this.movementGridSize / 2), y: zeroY + (row + 1) * this.movementGridSize - (this.movementGridSize / 2) }, weight: 1 };
         }
     }
