@@ -13,17 +13,35 @@
 
     LBBaseComponent.call(this, agent, LBLibrary.ComponentsTypes.CollidingMovement);
 
-    gameInstance.phaserGame.physics.arcade.enable(agent);
-    console.log(gameInstance.spritePixelMatrix);
+    //Props
+    this.minT;
+    this.h = h;
+    this.deltaT;
+
+
+    this.sendDelegate('endMoving', function (params) {
+        this.translateOfVector(params['direction']);
+    }.bind(this));
+
+    this.init(graph);
+
+    this.createParameters({'hitbox': {minT: this.minT, dim: {width: this.deltaT, height: this.h}}});
+}
+
+LBCollidingMovementComponent.prototype = Object.create(LBBaseComponent.prototype);
+LBCollidingMovementComponent.prototype.constructor = LBCollidingMovementComponent;
+
+LBCollidingMovementComponent.prototype.init = function (graph) {
+
     var width = gameInstance.spritePixelMatrix[graph].bottomright.x,
-        height = gameInstance.spritePixelMatrix[graph].bottomright.y,
-        G = agent.anchor.x * width,
-        maxLeftD = maxRightD = 0,
-        XLeftLimit = G - (gameInstance.movementGridSize / 2),
-        XRightLimit = G + (gameInstance.movementGridSize / 2);
+       height = gameInstance.spritePixelMatrix[graph].bottomright.y,
+       G = this.agent.anchor.x * width,
+       maxLeftD = maxRightD = 0,
+       XLeftLimit = G - (gameInstance.movementGridSize / 2),
+       XRightLimit = G + (gameInstance.movementGridSize / 2);
     for (var i = 0; i < XLeftLimit; i++) {
         if (!gameInstance.spritePixelMatrix[graph].matrix[i]) break;
-        for (var j = height - 1; j > height - 1 - ((gameInstance.movementGridSize * h) - (gameInstance.movementGridSize / 2)) - ((1 - agent.anchor.y) * height) ; j--) {
+        for (var j = height - 1; j > height - 1 - ((gameInstance.movementGridSize * h) - (gameInstance.movementGridSize / 2)) - ((1 - this.agent.anchor.y) * height) ; j--) {
             if (gameInstance.spritePixelMatrix[graph].matrix[i][j] == 1) {
                 var currentD = G - i;
                 if (currentD > maxLeftD) maxLeftD = currentD;
@@ -32,37 +50,59 @@
     }
     for (var i = XRightLimit - 1; i < gameInstance.spritePixelMatrix[graph].bottomright.x; i++) {
         if (!gameInstance.spritePixelMatrix[graph].matrix[i]) break;
-        for (var j = height - 1; j > height - 1 - ((gameInstance.movementGridSize * h) - (gameInstance.movementGridSize / 2)) - ((1 - agent.anchor.y) * height) ; j--) {
+        for (var j = height - 1; j > height - 1 - ((gameInstance.movementGridSize * h) - (gameInstance.movementGridSize / 2)) - ((1 - this.agent.anchor.y) * height) ; j--) {
             if (gameInstance.spritePixelMatrix[graph].matrix[i][j] == 1) {
                 var currentD = i - G;
                 if (currentD > maxRightD) maxRightD = currentD;
             }
         }
     }
-    var minT = (maxLeftD != 0) ? Math.floor(((gameInstance.movementGridSize * agent.currentTile.x) - (gameInstance.movementGridSize / 2) - maxLeftD) / gameInstance.movementGridSize) + 1 : agent.currentTile.x,
-        maxT = (maxRightD != 0) ? Math.floor(((gameInstance.movementGridSize * agent.currentTile.x) - (gameInstance.movementGridSize / 2) + maxRightD) / gameInstance.movementGridSize) + 1 : agent.currentTile.x,
-        deltaT = maxT - minT + 1;
+    this.minT = (maxLeftD != 0) ? Math.floor(((gameInstance.movementGridSize * this.agent.currentTile.x) - (gameInstance.movementGridSize / 2) - maxLeftD) / gameInstance.movementGridSize) + 1 : this.agent.currentTile.x;
+    var maxT = (maxRightD != 0) ? Math.floor(((gameInstance.movementGridSize * this.agent.currentTile.x) - (gameInstance.movementGridSize / 2) + maxRightD) / gameInstance.movementGridSize) + 1 : this.agent.currentTile.x;
+    this.deltaT = maxT - this.minT;
 
-
-
-
-    //OLD VERSION
-    //var width = gameInstance.phaserGame.cache.getImage(graph).width,
-    //    minT = Math.floor(((agent.currentTile.x * gameInstance.movementGridSize) - (gameInstance.movementGridSize / 2) - agent.anchor.x * width) / gameInstance.movementGridSize) + 1,
-    //    euristic = (agent.currentTile.x * gameInstance.movementGridSize) - (gameInstance.movementGridSize / 2) + (1- agent.anchor.x) * width,
-    //    maxT = (euristic % gameInstance.movementGridSize == 0) ? Math.floor(euristic / gameInstance.movementGridSize) : Math.floor(euristic / gameInstance.movementGridSize) + 1,
-    //    deltaT = maxT - minT + 1;
-    agent.body.setSize(deltaT * gameInstance.movementGridSize, h * gameInstance.movementGridSize);
-    //agent.body.position = gameInstance.mapMovementMatrix[minT][agent.currentTile.y - h];
-    var pos = gameInstance.mapMovementMatrix[minT][agent.currentTile.y - h + 1];
-    agent.body.x = pos.x - (gameInstance.movementGridSize / 2);
-    agent.body.y = pos.y - (gameInstance.movementGridSize / 2);
-    agent.body.immovable = true;
-    gameInstance.phaserGame.debug.body(agent);
-    //console.log('Result from cCollidingMovement for ' + agent.id + ' --Pos:' + agent.currentTile.x + ';' + agent.currentTile.y + ' --MinT: ' + minT + ' --MaxT: ' + maxT + ' --DeltaT: ' + deltaT);
-
-    this.sendDelegate('startMoving', function () { /*console.log('This is the callback from Colliding Movement...');*/ });
+    for (var i = this.minT; i <= maxT; i++) {
+        console.log('i', i);
+        for (var j = this.agent.currentTile.y; j < this.agent.currentTile.y + this.h; j++) {
+            console.log('Setting ', i, j);
+            gameInstance.mapMovementMatrix[i][j].weight = 0;
+        }
+    }
 }
 
-LBCollidingMovementComponent.prototype = Object.create(LBBaseComponent.prototype);
-LBCollidingMovementComponent.prototype.constructor = LBCollidingMovementComponent;
+LBCollidingMovementComponent.prototype.translateX = function (X, spriteH) {
+    if (!X) return;
+    var startX = this.minT - (((-1 + X) / 2) * this.deltaT),
+        translation = X * (this.deltaT + 1);
+    for (var i = 0; i < this.h; i++) {
+        var currentH = spriteH - i;
+        gameInstance.mapMovementMatrix[startX][currentH].weight = 1;
+        gameInstance.mapMovementMatrix[startX + translation][currentH].weight = 0;
+        labels[startX][currentH].setText(gameInstance.mapMovementMatrix[startX][currentH].weight.toString());
+        labels[startX + translation][currentH].setText(gameInstance.mapMovementMatrix[startX + translation][currentH].weight.toString());
+        console.log('Translated(X) ' + startX + ',' + currentH + ' to ' + (startX + translation) + ',' + currentH);
+    }
+    this.minT += X;
+}
+
+LBCollidingMovementComponent.prototype.translateY = function (Y) {
+    if (!Y) return;
+    var spriteX = this.agent.currentTile.x,
+        translation = Y * this.h,
+        startH = this.agent.currentTile.y - Y + (((-1 + Y) / 2) * (this.h - 1));
+    for (var i = 0; i <= this.deltaT; i++) {
+        var currentX = spriteX + i;
+        gameInstance.mapMovementMatrix[currentX][startH].weight = 1;
+        gameInstance.mapMovementMatrix[currentX][startH + translation].weight = 0;
+        labels[currentX][startH].setText(gameInstance.mapMovementMatrix[currentX][startH].weight.toString());
+        labels[currentX][startH + translation].setText(gameInstance.mapMovementMatrix[currentX][startH + translation].weight.toString());
+        console.log('Translated(Y) ' + currentX + ',' + startH + ' to ' + currentX + ',' + (startH + translation));
+    }
+}
+
+LBCollidingMovementComponent.prototype.translateOfVector = function (vector) {
+    console.log('Translating...' , this.agent);
+    this.translateX(vector.x, this.agent.currentTile.y - vector.y);
+    this.translateY(vector.y);
+    console.log('...finished translating.', gameInstance.mapMovementMatrix);
+}

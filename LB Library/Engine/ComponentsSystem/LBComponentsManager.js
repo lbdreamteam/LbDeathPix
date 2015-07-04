@@ -4,12 +4,12 @@
     // queste sono tutti i delegati che non sono ancora stati assegnati ai corrispettivi eventi: permette la creazione non gerarchica dei componenti
     //array del tipo: [chiamante: LBLibrary.ComponentsTypes.x][callback: function]
     this.Handlers = {};
-    //array per ora inutilizzato ma che servirà per la gestione degli update
-    this.Components = {};
     //array che contiene le prop utilizzate dagli eventi dei components come parametri
     this.Parameters = {};
     //array contenente tutti gli update in ordine (del tipo {update: funzione, parent: oggetto genitore , paramReq: [parametri richiesti], paramSnd: [parametri messi a disposizione]})
     this.UpdateFunctions = [];
+    //contiene i riferimenti ai componenti dell'agent (indicizzati con i tipi)
+    this.Components = {};
 }
 
 LBComponentsManager.prototype = Object.create(Object);
@@ -35,7 +35,7 @@ LBComponentsManager.prototype.addSignal = function (signal) {
 //aggiunge i parametri resi disponibili dal component all'elenco del manager
 LBComponentsManager.prototype.addParameters = function (parameters) {
     for (var parameter in parameters)
-        if (!this.Parameters[parameter]) {
+        if (typeof this.Parameters[parameter] === 'undefined') {
             this.Parameters[parameter] = parameters[parameter];
             //console.log('Added parameter ' + parameter.toString() + ' for value ');
             //console.log( this.Parameters[parameter]);
@@ -44,10 +44,16 @@ LBComponentsManager.prototype.addParameters = function (parameters) {
             console.warn('Two components added the same parameter, this may cause errors');
 }
 
+//funzione che aggiorna il valore di un parametro esistente
+LBComponentsManager.prototype.updateParam = function(paramName, value) {
+    if (typeof this.Parameters[paramName] === 'undefined') return console.log('Error at uploadParameter: ' + paramName + ' does not exists.' , this.Parameters);
+    else this.Parameters[paramName] = value;
+}
+
 //funzione che richiama tutti i delegati su quel segnale
 LBComponentsManager.prototype.signalCallback = function (signalName) {
     //console.log('Dispatching to handlers ...');
-    this.Signals[signalName].dispatch();
+    this.Signals[signalName].dispatch(this.Parameters);
     //console.log('Finished dispatching.');
 }
 
@@ -62,8 +68,9 @@ LBComponentsManager.prototype.loadDelegate = function (callingType, signalName, 
     }
 }
 
+//aggiunge una funzione all'update del manager, rispettando l'ordine in cui sono richiesti i parametri
 LBComponentsManager.prototype.loadUpdate = function (updateFunction, parent, reqParameters, sentParameters) {
-    var newUpdate = { 
+    var newUpdate = {
         update: updateFunction,
         parent: parent,
         paramReq: reqParameters,
@@ -87,13 +94,15 @@ LBComponentsManager.prototype.loadUpdate = function (updateFunction, parent, req
                         this.UpdateFunctions[i + j + 1] = tempArr[j];
                 }
     }
-    if (!added)
+    if (!added) {
+        console.log('pushing function...');
         this.UpdateFunctions.push(newUpdate);
-    console.log('aggiunta di un nuovo update da parte di '+parent.type);
+    }
+    console.log('aggiunta di un nuovo update da parte di ' + parent.type, this.UpdateFunctions);
 }
 
+//funzione di update del manager: richiama tutte le funzioni di update dei componenti
 LBComponentsManager.prototype.update = function() {
-    //console.log(this.UpdateFunctions);
     for (var i = 0; i < this.UpdateFunctions.length; i++)
         if (this.UpdateFunctions[i].parent.enabled)
             this.UpdateFunctions[i].update();

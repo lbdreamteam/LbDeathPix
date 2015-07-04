@@ -1,4 +1,4 @@
-﻿LBGame = function (width, height, worldWidth, worldHeight, movementGridSize, movementInEightDirections, overlap, renderer, mapMovementH, mapMovementH0, parent, state, transparent, antialias, physicsConfig) {
+﻿LBGame = function (width, height, worldWidth, worldHeight, movementGridSize, movementInEightDirections, overlap, renderer, pHs, mapMovementH, mapMovementH0, parent, state, transparent, antialias, physicsConfig) {
 
     //Definizione parametri opzionali
     width = width || 800;
@@ -8,12 +8,16 @@
     if (overlap === undefined) { overlap = true }
     renderer = renderer || Phaser.AUTO;
     parent = parent || '';
-    state = state || { preload: preload, create: this.gameSetup };
+    state = state || { preload: preload };
     transparent = transparent || false;
     if (antialias === undefined) { antialias = true }
     physicsConfig = physicsConfig || null;
     mapMovementH = mapMovementH || 0;
     mapMovementH0 = mapMovementH0 || 0;
+
+    //Setting degli handlers
+    this.privateHandlers = new LBPrivateHandlers();
+    this.setHandlers(pHs);
 
     //Proprietà
     this.phaserGame = new Phaser.Game(width, height, renderer, parent, state, transparent, antialias, physicsConfig);
@@ -23,7 +27,7 @@
     this.playerSpawnPoint = {};
 
     //Depth
-    this.cDepth = new LBDepthComponent(this);
+    this.cDepth = new LBDepthComponent();
 
     //Overlap
     this.overlap = overlap;
@@ -44,7 +48,7 @@
     }
 
     //Pixel-perfect collision
-    this.cPpc = new LBPixelPerfectCollisionComponent(this);
+    this.cPpc = new LBPixelPerfectCollisionComponent();
 
     //Hitbox
     this.spritePixelMatrix = {};
@@ -63,16 +67,22 @@ LBGame.prototype = Object.create(Object);
 LBGame.prototype.constructor = LBGame;
 
 //Crea la mappa dei punti di snap per i baricentri degli oggetti nel modo tile-based
-
-//ISSUE: MapMovementH0 non funziona, anche cambiandolo il risultato è sempre lo stesso!
-//ISSUE: Problema con il corretto posizionamento degli oggetti e dei personaggi. Non deve dipendere dalla zona del movimento!
 LBGame.prototype.createMovementMap = function (h, h0) {
-    var map = {},
+    //NUOIVA VERSIONE COMPATIBILE CON A* <--CONTROLLARE TUTTI I RIFERIMENTI IN GIRO AL PROGETTO
+    var map = [],
         zeroY = this.phaserGame.height - h0 - (h * this.movementGridSize);
-    for (var column = 1; column <= Math.floor(this.phaserGame.width / this.movementGridSize) ; column++) {
-        map[column] = {};
-        for (var row = 1; row <= h; row++) map[column][row] = { x: (column * this.movementGridSize) - (this.movementGridSize / 2), y: zeroY + (row * this.movementGridSize) - (this.movementGridSize / 2) };
+
+    for (var column = 0; column < Math.floor(this.phaserGame.width / this.movementGridSize); column++) {
+        map[column] = [];
+        for (var row = 0; row < h ; row++) {
+            map[column][row] = { G: { x: (column + 1) * this.movementGridSize - (this.movementGridSize / 2), y: zeroY + (row + 1) * this.movementGridSize - (this.movementGridSize / 2) }, weight: 1 };
+        }
     }
+
+    //for (var row = 0; row < h; row++) {
+    //    map[row] = [];
+    //    for (var column = 0; column < Math.floor(this.phaserGame.width / this.movementGridSize) ; column++) map[row][column] = { G: { x: (column * this.movementGridSize) - (this.movementGridSize / 2), y: zeroY + (row * this.movementGridSize) - (this.movementGridSize / 2) }, weight: 1 };
+    //}
     return map;
 }
 
@@ -128,7 +138,7 @@ LBGame.prototype.loadCollisionPixelMatrix = function (cacheName, path) {
             xmlhttp = undefined;
         }
         else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {
-            console.log('ATTENTION: missing pixel matrix for the image ' + cacheName + '. A  temporary pixel matrix has been created, but its use may reduce performance');
+            console.warn('ATTENTION: missing pixel matrix for the image ' + cacheName + '. A  temporary pixel matrix has been created, but its use may reduce performance');
             gameInstance.cPpc.spriteCollisionMatrix[cacheName] = [gameInstance.spritePixelMatrix[cacheName]];
             xmlhttp = undefined;
         }
@@ -151,44 +161,19 @@ LBGame.prototype.loadSpritePixelMatrix = function (cacheName) {
     else gameInstance.spritePixelMatrix[cacheName] = gameInstance.createPixelMatrix(cacheName);
 }*/
 
+LBGame.prototype.setHandlers = function (pHs) {
 
+    console.log('Setting handlers...');
 
-LBGame.prototype.gameSetup = function () { //funzione richiamata dal create del gioco
-
-    eurecaClient = new Eureca.Client();
-
-    eurecaClient.ready(function (proxy) {
-        eurecaServer = proxy;
-    });
-
-    /************ FUNZIONI DISPONIBILI LATO SERVER ************/
-    eurecaClient.exports.createGame = function (id, Tx, Ty, _port) {
-        port = _port;
-        myId = id;
-        gameInstance.playerSpawnPoint = { x: Tx, y: Ty };
-        create();
-        gameInstance.otherPlayersW.worker.postMessage({ event: 'init', params: myId }); //inizializza il worker
-    }
-
-    eurecaClient.exports.updatePlayer = function (x, y, callId) {
-        gameInstance.clientsList[myId].updatePosition(x, y, callId);
+    eurecaClient.exports.serverHandler = function (args) {
+        gameInstance.privateHandlers.callHandler(args.event, args.params);
+    };
+    for (var iHandler in pHs) {
+        var currHandler = pHs[iHandler];
+        this.privateHandlers.addHandler(currHandler.event, currHandler.params, currHandler.function);
     };
 
-    eurecaClient.exports.updateOtherPlayers = function (posTable) {
-        OtherPlayersManager.Update(posTable);
-    };
-
-    eurecaClient.exports.onOtherPlayerConnect = function (id, x, y) {
-        OtherPlayersManager.OnConnect(id, x, y);
-    };
-
-    eurecaClient.exports.onOtherPlayerDisconnect = function (id) {
-        OtherPlayersManager.OnDisconnect(id);
-    };
-
-    eurecaClient.exports.spawnOtherPlayers = function (posTable) {
-        OtherPlayersManager.Spawn(posTable);
-    };
+    console.log('...done');
 }
 
 LBGame.prototype.setVisibilityChangeHandlers = function () {
