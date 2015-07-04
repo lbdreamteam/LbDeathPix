@@ -21,6 +21,7 @@ LBServer = function (port, movementGridSize, spawnPoint, pHandlers, onInit, extr
     this.posTable = { nowPos: {}, oldPod: {} };
     this.spawnPoint = spawnPoint || { sTx: 1, sTy: 1 };
     this.movementGridSize = movementGridSize || 32;
+    this.port = port;
 
     ///NODE SETTINGS
     this.init(extraPackages, onInit);
@@ -63,10 +64,6 @@ LBServer.prototype.start = function (port) {
 
     eurecaInstance.onConnect(function (conn) {
         serverInstance.clients.onConnect(conn);
-        //console.log('Connected new client: ' + conn.id + ' --From ' + conn.remoteAddress);
-        //this.clients[conn.id] = { id: conn.id, remote: eurecaServer.getClient(conn.id), state: { x: 1, y: 1 } };
-        //this.posTable.nowPos[conn.id] = this.clients[conn.id].state;
-        //this.clients[conn.id].remote.serverHandler({ event: 'createGame', params: { id: conn.id, Tx: this.clients[conn.id].state.x, Ty: this.clients[conn.id].state.y } });
     });
 
     eurecaInstance.onDisconnect(function (conn) {
