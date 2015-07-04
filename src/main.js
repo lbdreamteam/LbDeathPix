@@ -1,4 +1,3 @@
-﻿var jsonMap; //TODO: rivedere questa variabile, non mi piace globale!
 eurecaClient = new Eureca.Client();
 eurecaClient.ready(function (proxy) {
     eurecaServer = proxy;
@@ -15,12 +14,20 @@ gameInstance = new LBGame(
     Phaser.AUTO,    //renderer
     [       //pHs        
         {
+            'event': 'joined',
+            'params': [],
+            'function': function () {
+                joined = true;
+                console.log('joined');
+            }
+        },
+        {
             'event': 'createGame',
-            'params': ['id', 'Tx', 'Ty', 'port'],
+            'params': ['id', 'Tx', 'Ty'],
             'function': function (params) {
                 console.log('Creating game');
+                gameInstance.serverPort = params.port;
                 myId = params.id;
-                port = params.port;
                 gameInstance.playerSpawnPoint = { x: params.Tx, y: params.Ty };
                 gameInstance.otherPlayersW.worker.postMessage({ event: 'init', params: myId }); //inizializza il worker
                 create();
@@ -66,12 +73,22 @@ gameInstance = new LBGame(
     5);
 
 function preload() {
+    //TODO: spostare il caricamento delle immagini all'interno dei vari states
+    gameInstance.loadImage('tree', 'assets/tree.png');
+    gameInstance.loadImage('player', 'assets/player.png');
+
+    gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
+    gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
+    gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
+
     gameInstance.setVisibilityChangeHandlers();
 }
 
 function create() {
+    gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
+    gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
 
-    console.log('port: ' + port);
+    console.log('port: ' + gameInstance.serverPort);
 
     //Chiamata a LBMapAPI per scaricare la mappa
     var xmlhttp = new XMLHttpRequest();
@@ -90,9 +107,6 @@ function create() {
         }
     }
 
-    xmlhttp.open('GET', 'http://lbbigmama.ddns.net:8082/LBApi/downloadMap?port=' + port, false);
+    xmlhttp.open('GET', 'http://lbbigmama.ddns.net:8082/LBApi/downloadMap?port=' + gameInstance.serverPort, false);
     xmlhttp.send();
-
-  
-    
 }
