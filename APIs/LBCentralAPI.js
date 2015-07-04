@@ -96,7 +96,7 @@ LBApi.create(
                 			if (err) res.json({err: err});
                 			else {
                     			var child;
-                    			child = exec('node server.js ' + port);
+                    			child = exec('node LBServer.js ' + port);
                     			console.log('Started game on port: ' + port);
                     			child = exec('aws ec2 authorize-security-group-ingress --group-id sg-0787d562 --protocol tcp --port ' + port + ' --cidr 0.0.0.0/0 --region eu-west-1');
                     			console.log('Opened port: ' + port);
