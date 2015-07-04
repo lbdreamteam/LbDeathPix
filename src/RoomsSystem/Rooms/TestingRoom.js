@@ -31,6 +31,7 @@ TestingRoom.prototype.create = function() {
     gameInstance.cDepth.depthSort(gameInstance);
 
     fpsText = gameInstance.phaserGame.add.text(10, 10, 'FPS: ' + gameInstance.phaserGame.time.fps);
+    fpsText.fixedToCamera = true;
 }
 
 var fpsText;
