@@ -18,10 +18,8 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="APIs\APIsModules\LBAPIModule.js" />
-    <Content Include="APIs\APIsModules\LBAPIPrivateHandlersModule.js" />
-    <Content Include="APIs\LBCentralAPI.js" />
-    <Content Include="APIs\LBMapAPI.js" />
+    <Content Include="APIsModules\LBAPIModule.js" />
+    <Content Include="APIsModules\LBAPIPrivateHandlersModule.js" />
     <Content Include="index.html" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBCollidingMovementComponent.js" />
     <Content Include="LB Library\Engine\ComponentsSystem\Entity components\LBKeyboardInputComponent.js" />
@@ -41,18 +39,28 @@
     <Content Include="LB Library\Engine\LBGlobalVariables.js" />
     <Content Include="LB Library\Engine\LBSprite.js" />
     <Content Include="LB Library\Engine\LBState.js" />
+    <Content Include="LB Library\Engine\WeaponsSystem\LBWeapon.js" />
+    <Content Include="LB Library\Engine\WeaponsSystem\WeaponsData.js" />
+    <Content Include="LB Library\Entities\LBBaseAI.js" />
+    <Content Include="LB Library\Entities\LBBullet.js" />
     <Content Include="LB Library\Entities\LBOtherPlayer.js" />
     <Content Include="LB Library\Entities\LBPlayer.js" />
     <Content Include="LB Library\Entities\LBTestingTree.js" />
     <Content Include="LB Library\UI\LBButton.js" />
     <Content Include="LB Library\Utility\Elements\LBHashTable.js" />
     <Content Include="LB Library\Utility\phaser.js" />
-    <Content Include="server.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LBCentralAPI.js" />
+    <Content Include="LBClientsManagerModule.js" />
+    <Content Include="LBMapAPI.js" />
+    <Content Include="LBServer.js" />
+    <Content Include="LBServerModule.js" />
+    <Content Include="LBServerPrivateHandlersModule.js" />
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="src\GameState.js" />
     <Content Include="src\main.js" />
     <Content Include="src\MenuState.js" />
     <Content Include="src\RoomsSystem\BaseRoom.js" />
