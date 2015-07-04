@@ -99,7 +99,7 @@ function create() {
             console.log(jsonMap);
             gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
             gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
-            gameInstance.phaserGame.state.add('menu', MenuState, true);
+            gameInstance.phaserGame.state.add('menu', GameState, true);
 
         }
         else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {
