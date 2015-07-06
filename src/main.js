@@ -4,11 +4,11 @@ eurecaClient.ready(function (proxy) {
 });
 
 gameInstance = new LBGame(
-    720,    //width
-    512,    //height
+    1280,    //width
+    720,    //height
     1500,   //wWidth
-    512,    //wHeight
-    32,     //MovgridS
+    720,    //wHeight
+    48,     //MovgridS
     true,   //movIn8Dir
     true,   //overlap
     Phaser.AUTO,    //renderer
@@ -75,6 +75,7 @@ gameInstance = new LBGame(
 
 function preload() {
     //TODO: spostare il caricamento delle immagini all'interno dei vari states
+    gameInstance.phaserGame.load.json('graphsJSON', 'graphsJSON.json');
     gameInstance.loadImage('tree', 'assets/tree.png');
     gameInstance.loadImage('player', 'assets/player.png');
 
@@ -82,30 +83,41 @@ function preload() {
     gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
     gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
     console.log('font loaded');
+
     gameInstance.setVisibilityChangeHandlers();
 }
 
 function create() {
-
+    
     console.log('port: ' + gameInstance.serverPort);
 
+    //Local map generation
+    generateMap();
+    //console.log(jsonMap);
+
+    gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
+    gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
+    gameInstance.phaserGame.state.add('menu', MenuState, true);
+
+    //Api map generation
+
     //Chiamata a LBMapAPI per scaricare la mappa
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            jsonMap = JSON.parse(xmlhttp.responseText).response;
+    //var xmlhttp = new XMLHttpRequest();
+    //xmlhttp.onreadystatechange = function () {
+    //    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+    //        jsonMap = JSON.parse(xmlhttp.responseText).response;
 
-            console.log(jsonMap);
-            gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
-            gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
-            gameInstance.phaserGame.state.add('menu', MenuState, true);
+    //        console.log(jsonMap);
+    //        gameInstance.phaserGame.physics.startSystem(Phaser.Physics.ARCADE);
+    //        gameInstance.cDepth.depthGroup = gameInstance.phaserGame.add.group(undefined, undefined, true);
+    //        gameInstance.phaserGame.state.add('menu', MenuState, true);
 
-        }
-        else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {
-            console.log('404: LBMapAPI NOT FOUND');
-        }
-    }
+    //    }
+    //    else if (xmlhttp.readyState === 4 && xmlhttp.status === 404) {
+    //        console.log('404: LBMapAPI NOT FOUND');
+    //    }
+    //}
 
-    xmlhttp.open('GET', 'http://lbbigmama.ddns.net:8082/LBApi/downloadMap?port=' + gameInstance.serverPort, false);
-    xmlhttp.send();
+    //xmlhttp.open('GET', 'http://lbbigmama.ddns.net:8082/LBApi/downloadMap?port=' + gameInstance.serverPort, false);
+    //xmlhttp.send();
 }

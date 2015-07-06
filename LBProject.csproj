@@ -57,6 +57,7 @@
     <Content Include="LBServer.js" />
     <Content Include="LBServerModule.js" />
     <Content Include="LBServerPrivateHandlersModule.js" />
+    <Content Include="mapGenerator.js" />
     <Content Include="package.json" />
   </ItemGroup>
   <ItemGroup>
