@@ -6,11 +6,18 @@
     this.cursorY = 0;
 }
 
+var l1, l2, l3, l4;
+
 BaseRoom.prototype = Object.create(LBState.prototype);
 BaseRoom.prototype.constructor = BaseRoom;
 
 BaseRoom.prototype.preload = function () {
     LBState.prototype.preload.call(this);
+    
+    gameInstance.phaserGame.load.image('layer1', 'assets/testingParallax/layer1.png');
+    gameInstance.phaserGame.load.image('layer2', 'assets/testingParallax/layer2.png');
+    gameInstance.phaserGame.load.image('layer3', 'assets/testingParallax/layer3.png');
+    gameInstance.phaserGame.load.image('layer4', 'assets/testingParallax/layer4.png');
     
     for (var i in this.MapJSON.graphs) {
         if ((this.MapJSON.graphs[i]).constructor === Array) {
@@ -113,10 +120,25 @@ BaseRoom.prototype.drawBuildings = function () {
 }
 
 
+//TESTING
+BaseRoom.prototype.testParallax = function () {
+    
+    l4 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer4'); 
+    l3 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer3');
+    l2 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer2'); 
+    l1 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer1');
+    
+    gameInstance.bgGroup.add(l4);
+    gameInstance.bgGroup.add(l3);
+    gameInstance.bgGroup.add(l2);
+    gameInstance.bgGroup.add(l1);
+}
+
 BaseRoom.prototype.draw = function () {
-    this.drawBg();
-    this.drawForeground();
-    this.drawRoad();
-    this.drawSidewalk();
-    this.drawBuildings();
+    //this.drawBg();
+    //this.drawForeground();
+    //this.drawRoad();
+    //this.drawSidewalk();
+    //this.drawBuildings();
+    this.testParallax();
 }

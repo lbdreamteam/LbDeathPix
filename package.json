@@ -6,8 +6,9 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "*",
-    "engine.io": "*",
-    "eureca.io": "*"
+    "cli-color": "^1.0.0",
+    "engine.io": "^1.5.2",
+    "eureca.io": "^0.6.41",
+    "express": "^4.13.3"
   }
 }

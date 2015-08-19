@@ -6,7 +6,7 @@ eurecaClient.ready(function (proxy) {
 gameInstance = new LBGame(
     1280,    //width
     720,    //height
-    1500,   //wWidth
+    3500,   //wWidth
     720,    //wHeight
     48,     //MovgridS
     true,   //movIn8Dir
