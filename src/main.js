@@ -12,25 +12,32 @@ gameInstance = new LBGame(
     true,   //movIn8Dir
     true,   //overlap
     Phaser.AUTO,    //renderer
-    [       //pHs        
+    [       //pHs     
+        {
+            'event': 'onConnect',
+            'params': ['id', 'port'],
+            'function': function (params) {
+                console.log('%cConnected to server', 'background: #76EE00');
+                gameInstance.serverPort = params.port;
+                myId = params.id;
+                gameInstance.otherPlayersW.worker.postMessage({ event: 'init', params: myId });
+            }
+        },
+        {
+            'event': 'createGame',
+            'params': ['Tx', 'Ty'],
+            'function': function (params) {
+                console.log('%cCreating game', 'background: #76EE00');
+                gameInstance.playerSpawnPoint = { x: params.Tx, y: params.Ty };
+                create();
+            }
+        },
         {
             'event': 'joined',
             'params': [],
             'function': function () {
                 joined = true;
                 console.log('joined');
-            }
-        },
-        {
-            'event': 'createGame',
-            'params': ['id', 'Tx', 'Ty'],
-            'function': function (params) {
-                console.log('Creating game');
-                gameInstance.serverPort = params.port;
-                myId = params.id;
-                gameInstance.playerSpawnPoint = { x: params.Tx, y: params.Ty };
-                gameInstance.otherPlayersW.worker.postMessage({ event: 'init', params: myId }); //inizializza il worker
-                create();
             }
         },
         {
@@ -76,13 +83,15 @@ gameInstance = new LBGame(
 function preload() {
     //TODO: spostare il caricamento delle immagini all'interno dei vari states
     gameInstance.phaserGame.load.json('graphsJSON', 'graphsJSON.json');
-    gameInstance.loadImage('tree', 'assets/tree.png');
-    gameInstance.loadImage('player', 'assets/player.png');
+    
 
-    gameInstance.phaserGame.load.image('font_table_small', 'assets/font_small/font.png');
-    gameInstance.phaserGame.load.image('font_table_medium', 'assets/font_medium/font.png');
-    gameInstance.phaserGame.load.image('font_table_large', 'assets/font_large/font.png');
-    console.log('font loaded');
+    gameInstance.loadFonts(
+        [    //questa funzione utilizza una queue asincrona che permette di essere certi che la callback verrà eseguita solo a caricamento competato
+            ['font_table_small', 'assets/font_small/font.png'],
+            ['font_table_medium', 'assets/font_medium/font.png'],
+            ['font_table_large', 'assets/font_large/font.png']
+        ]        
+    );
 
     gameInstance.setVisibilityChangeHandlers();
 }

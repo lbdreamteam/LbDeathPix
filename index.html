@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Javascript Phaser App</title>    
+    <title>Javascript Phaser App</title>   
 </head>
 <body onload="digestURL()">
 
@@ -20,7 +20,25 @@
             for (var i in URL_params) {
                 out += 'param: ' + i + ' value: ' + URL_params[i] + '\n';
             }
-        }
+            return out;
+        };
+        //URL_params = digestURL();
+        //if (URL_params['token']) {
+        //    var xmlHttp = new XMLHttpRequest(),
+        //        url = 'http://localhost:8081/LBApi/authorize';
+        //    xmlHttp.onreadystatechange = function () {
+        //        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        //            var res = JSON.parse(xmlHttp.responseText);
+        //            if (!res.message) window.close()
+        //            else {
+        //                url = 'http://localhost:8081/LBApi/authorize'
+        //            }
+        //        } else window.close();
+        //    };
+        //    xmlHttp.open('POST', url, false); //richiede l'autenticazione del token
+        //    xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //    xmlHttp.send('token=' + URL_params['token']);
+        //} else window.close();
     </script>
 
     <!--Elenco degli script da importare-->
@@ -42,6 +60,7 @@
 	<script src="LB Library/Engine/ComponentsSystem/Entity components/LBShootableComponent.js"></script>
     <script src="LB Library/Engine/ComponentsSystem/Entity components/LBShootingComponent.js"></script>
     <script src="LB Library/Engine/ComponentsSystem/Entity components/LBPathFindingComponent.js"></script>
+    <script src="LB Library/Engine/ComponentsSystem/Entity components/LBServerDrivenMovementComponent.js"></script>
 
     <!--UI-->
 
@@ -51,7 +70,7 @@
     <!--Utility Scripts-->
     <script src="/eureca.js"></script>
     <script src="/LB Library/Engine/LBGlobalVariables.js"></script>
-    <script src="/LB Library/Engine/Connections/LBOtherPlayerWorkerClass.js"></script>
+    <script src="/LB Library/Engine/Connections/LBOtherPlayerWorkerModule.js"></script>
     <script src="/LB Library/Engine/Connections/LBOtherPlayersManager.js"></script>
     <script src="LB Library/Utility/Elements/LBPrivateHandlers.js"></script>
     <script src="/LB Library/Engine/LBGame.js"></script>
@@ -70,7 +89,6 @@
     
     <script src="LB Library/Utility/Elements/LBHashTable.js"></script>
     <script src="LB Library/Engine/LBState.js"></script>
-
     <script src="src/RoomsSystem/BaseRoom.js"></script>
     <script src="src/MenuState.js"></script>
     <script src="src/RoomsSystem/Rooms/TestingRoom.js"></script>

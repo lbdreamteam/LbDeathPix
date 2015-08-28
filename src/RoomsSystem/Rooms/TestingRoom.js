@@ -10,16 +10,24 @@ TestingRoom.prototype.constructor = TestingRoom;
 
 TestingRoom.prototype.preload = function () {
     BaseRoom.prototype.preload.call(this);
-
-    gameInstance.phaserGame.world.setBounds(0, 0, gameInstance.world.width, gameInstance.world.height);
-    this.add.existing(gameInstance.cDepth.depthGroup);
-    gameInstance.phaserGame.time.advancedTiming = true;
-
-    gameInstance.phaserGame.load.crossOrigin = 'anonymous';
-    gameInstance.loadImage('player', 'https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/player.png');
-
-    eurecaServer.clientHandler({ 'event': 'ready', 'params': { 'id': myId } });
-    console.log('Joining...');
+    
+    this.loadImages(
+        [
+            ['tree', 'assets/tree.png'],
+            ['player', 'assets/player.png']
+        ],
+        function() {
+            gameInstance.phaserGame.world.setBounds(0, 0, gameInstance.world.width, gameInstance.world.height);
+            gameInstance.phaserGame.add.existing(gameInstance.cDepth.depthGroup);
+            gameInstance.phaserGame.time.advancedTiming = true;
+        
+            //gameInstance.phaserGame.load.crossOrigin = 'anonymous';
+            //gameInstance.loadImage('player', 'https://s3-eu-west-1.amazonaws.com/lbbucket/Assets/Images/player.png');
+        
+            eurecaServer.clientHandler({ 'event': 'ready', 'params': { 'id': myId } });
+            console.log('Joining...');
+        }
+    );
 }
 
 TestingRoom.prototype.create = function() {
