@@ -16,6 +16,16 @@ BaseRoom.prototype.preload = function () {
     
     gameInstance.phaserGame.load.image('layer1', 'assets/testingParallax/layer1.png');
     gameInstance.phaserGame.load.image('layer2', 'assets/testingParallax/layer2.png');
+    
+    gameInstance.phaserGame.load.image('layer2_1', 'assets/testingParallax/PNG/layer2/Roccia1.png');
+    gameInstance.phaserGame.load.image('layer2_2', 'assets/testingParallax/PNG/layer2/Roccia2.png');
+    gameInstance.phaserGame.load.image('layer2_3', 'assets/testingParallax/PNG/layer2/Roccia3.png');
+    gameInstance.phaserGame.load.image('layer2_4', 'assets/testingParallax/PNG/layer2/Roccia4.png');
+    gameInstance.phaserGame.load.image('layer2_5', 'assets/testingParallax/PNG/layer2/Roccia5.png');
+    gameInstance.phaserGame.load.image('layer2_6', 'assets/testingParallax/PNG/layer2/Roccia6.png');
+    gameInstance.phaserGame.load.image('layer2_7', 'assets/testingParallax/PNG/layer2/Roccia7.png');
+    gameInstance.phaserGame.load.image('layer2_8', 'assets/testingParallax/PNG/layer2/Roccia8.png');
+        
     gameInstance.phaserGame.load.image('layer3', 'assets/testingParallax/layer3.png');
     gameInstance.phaserGame.load.image('layer4', 'assets/testingParallax/layer4.png');
     
@@ -36,6 +46,8 @@ BaseRoom.prototype.preload = function () {
             }
         }
     }
+    
+    
 }
 
 BaseRoom.prototype.create = function () {
@@ -125,7 +137,25 @@ BaseRoom.prototype.testParallax = function () {
     
     l4 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer4'); 
     l3 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer3');
-    l2 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer2'); 
+    
+    var l2;
+    l2 = gameInstance.phaserGame.add.group();
+    
+    var l2Array = ['layer2_1', 'layer2_2', 'layer2_3', 'layer2_4', 'layer2_5', 'layer2_6', 'layer2_7', 'layer2_8'];
+    
+    var maxHeight = 0;
+    for (var index in l2Array) {
+        if (gameInstance.phaserGame.cache.getImage(l2Array[index]).height > maxHeight) maxHeight = gameInstance.phaserGame.cache.getImage(l2Array[index]).height;
+    }
+    
+    
+    for (var i = 0; i < gameInstance.world.width; i) {
+        var randomIndex = Math.floor(Math.random() * ((l2Array.length - 1) - 0 + 1)) + 0;
+        var customY = maxHeight - gameInstance.phaserGame.cache.getImage(l2Array[randomIndex]).height;
+        l2.create(i, 0 + customY, l2Array[randomIndex]);
+        i += gameInstance.phaserGame.cache.getImage(l2Array[randomIndex]).width; 
+    }
+    //alert(l2[0]);
     l1 = gameInstance.phaserGame.add.tileSprite(0, 0, gameInstance.world.width, 387, 'layer1');
     
     gameInstance.bgGroup.add(l4);

@@ -40,9 +40,9 @@ var fpsText;
 
 TestingRoom.prototype.update = function () {
     fpsText.setText('FPS: ' + gameInstance.phaserGame.time.fps);
-    //bg.x = gameInstance.phaserGame.camera.x * 0.2;
+    
     l1.x = gameInstance.phaserGame.camera.x * 0.8;
-    l2.x = gameInstance.phaserGame.camera.x * 0.4;
+    //l2.x = gameInstance.phaserGame.camera.x * 0.4;
     l3.x = gameInstance.phaserGame.camera.x * 0.2;
     l4.x = gameInstance.phaserGame.camera.x * 0.1;
 }
